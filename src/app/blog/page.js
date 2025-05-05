@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 
 function Header({ title }) {
@@ -13,25 +12,18 @@ function Blogs() {
   ];
 
   return (
-    <div>
+    <>
       <Header title="Blog!" />
       <ul>
         {blogs.map((blog, key) => (
           <li key={key}>
-            <Link
-              className="underline bg-amber-600"
-              href={{
-                pathname: `/blog/[slug]}`,
-                query: { postName: blog.name },
-              }}
-            >
-
+            <Link className="underline bg-amber-600" href={`/blog/${blog.title}`}>
               Show me the title of this blog: {blog.name}
             </Link>
           </li>
         ))}
       </ul>
-    </div>
+      </>
   );
 }
 

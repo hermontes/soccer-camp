@@ -7,8 +7,8 @@ export default function HomePage() {
   const { data: session } = useSession();
 
   return (
-    <div>
-      <Navigation session={session}></Navigation>
+    <div className="flex w-full bg-center">
+      HomePage content
     </div>
   );
 }
