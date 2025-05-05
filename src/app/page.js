@@ -1,9 +1,14 @@
+"use client"
+import Navigation from "@/components/ui/Navigation";
 
+import { useSession } from "@/lib/auth-client";
 
 export default function HomePage() {
+  const { data: session } = useSession();
+
   return (
     <div>
-      <h1>You're in the homepage and second page says:</h1>
+      <Navigation session={session}></Navigation>
     </div>
   );
 }
