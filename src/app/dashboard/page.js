@@ -12,5 +12,6 @@ export default async function Dashboard() {
     return <DashboardClient user={session.user}></DashboardClient>;
   } else {
     console.log("There is no session");
+    throw redirect("/login")
   }
 }
