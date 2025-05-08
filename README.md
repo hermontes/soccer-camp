@@ -1,6 +1,6 @@
 # Soccer Camp Application
 
-A modern web application for managing soccer camp registrations and activities, built with focus on user experience.
+A web application for managing soccer camp registrations and activities, with focus on user experience.
 
 ## Technologies
 
@@ -40,7 +40,7 @@ A modern web application for managing soccer camp registrations and activities, 
    ```
    The application will be available at [http://localhost:3000](http://localhost:3000)
 
-## 🔑 Features
+## Features
 
 
 ## 📝 Scripts
