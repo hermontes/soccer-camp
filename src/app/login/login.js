@@ -1,77 +1,66 @@
 "use client";
 
-import { useState } from "react";
-import { redirect, useRouter } from "next/navigation";
-import { useEffect } from "react";
-import { signUserIn } from "@/lib/server-auth/users-auth";
-import { Button } from "@/components/ui/button";
-import { useFormStatus } from "react-dom";
+import { useRouter } from "next/navigation";
+import { signUserIn } from "@/app/utils/authentication/users-auth";
 import Link from "next/link";
+import { useForm } from "react-hook-form";
+import {
+  SubmitButton,
+  DisplayErrorMessage,
+} from "@/components/forms/form-validation";
+import { useState } from "react";
 
 export default function LogInPage() {
-  const [connMessage, setConnMessage] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [invalidLogin, setInvalidLogin] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+    getValues,
+    watch, //checking for input values
+    resetField,
+  } = useForm();
+
   const router = useRouter();
 
-  //Temp tester of local DB
-  // const testConnection = async () => {
-  //   try {
-  //     const res = await fetch("/api/test-pg");
-  //     const data = await res.json();
-  //
-  // };
-
-  function SubmitButton() {
-    const { pending } = useFormStatus();
-
-    return (
-      <button
-        disabled={pending}
-        type="submit"
-        className={`flex w-full justify-center rounded-md  px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs  focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${
-          pending
-            ? `bg-indigo-300`
-            : `bg-indigo-600 hover:bg-indigo-500 cursor-pointer`
-        } `}
-      >
-        {pending ? "Signining in.." : "Sign In"}
-      </button>
-    );
-  }
-
-  const signUpConnection = async (event) => {
-    event.preventDefault();
-    try {
-      const data = await signUserIn(email, password);
-
-      console.log("✅ Login success: ", data);
-      router.push("/dashboard");
-      // console.log("The error message: ", error);
-    } catch (error) {
-      //ALERT: the username or pass was wrong
-      console.log("Error logging in: ", error);
-    }
+  const handleLogIn = async (data) => {
+    await signUserIn(data)
+      .then((response) => {
+        if (response) {
+          console.log("success: ", response);
+          setInvalidLogin(false);
+          reset();
+          router.push("/dashboard");
+        } else {
+          setInvalidLogin(true);
+        }
+      })
+      .catch((error) => {
+        console.log("Error while trying to login: ", error);
+        setInvalidLogin(true);
+      });
   };
 
   return (
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <img
+          {/* <img
             alt="Your Company"
             src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
             className="mx-auto h-10 w-auto"
-          />
+          /> */}
           <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">
             Sign in to your account
           </h2>
         </div>
 
-        {/* <div className="!shadow-[0px_0px_3px_gray]">Test</div> */}
         <div className="!shadow-md w-full max-w-md mt-10 sm:mx-auto sm:w-full sm:max-w-sm md:max-w-md bg-[#FFFFFF] p-[3rem] rounded-md ">
           <form
-            onSubmit={signUpConnection}
+            onSubmit={handleSubmit((data) => handleLogIn(data))}
+            // onSubmit={handleSubmit((data) => sendFormToServer(data))}
             method="POST"
             className="space-y-6 "
           >
@@ -84,14 +73,22 @@ export default function LogInPage() {
               </label>
               <div className="mt-2">
                 <input
+                  {...register("email", {
+                    required: "Please enter your email",
+                    pattern: {
+                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                      message: "Email must be formatted correctly.",
+                    },
+                  })}
                   id="email"
                   name="email"
                   type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
                   autoComplete="email"
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                 />
+                {errors.email && (
+                  <DisplayErrorMessage message={errors.email.message} />
+                )}
               </div>
             </div>
 
@@ -114,22 +111,37 @@ export default function LogInPage() {
               </div>
               <div className="mt-2">
                 <input
+                  {...register("password", {
+                    required: "Please enter your password",
+                    minLength: {
+                      value: 8,
+                      message: "Minimum length of 8 characters required",
+                    },
+                    maxLength: {
+                      value: 80,
+                      message: "Exceeded maximum length of 80 characters",
+                    },
+                  })}
                   id="password"
                   name="password"
                   type="password"
-                  value={password}
-                  onChange={(e) => {
-                    setPassword(e.target.value);
-                  }}
-                  required
                   autoComplete="current-password"
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                 />
+                {errors.password && (
+                  <DisplayErrorMessage message={errors.password.message} />
+                )}
               </div>
             </div>
-
+            {invalidLogin && (
+              <DisplayErrorMessage message={"Email or password is incorrect"} />
+            )}
             <div>
-              <SubmitButton />
+              <SubmitButton
+                isSubmitting={isSubmitting}
+                defaultMessage={"Log In"}
+                pendingMessage={"Logging In.."}
+              />
             </div>
           </form>
 
