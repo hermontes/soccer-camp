@@ -17,7 +17,7 @@ A modern web application for managing soccer camp registrations and activities, 
 ### Authentication & Database
 - **Better Auth** - Authentication system
 - **PostgreSQL** - Relational database for storing users info and sesessions
-- 
+
 ### Development Tools
 - **TurboPack** - Incremental bundler and build system
 - **ESLint** - for Code linting 
