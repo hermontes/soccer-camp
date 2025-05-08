@@ -1,36 +1,80 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Soccer Camp Application
 
-## Getting Started
+A modern web application for managing soccer camp registrations and activities, built with cutting-edge technologies and a focus on user experience.
 
-First, run the development server:
+## 🚀 Technologies
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+### Frontend
+- **Next.js 15** - React framework for production-grade applications
+- **React 19** - JavaScript library for building user interfaces
+- **Tailwind CSS 4** - Utility-first CSS framework
+- **Headless UI** - Unstyled, fully accessible UI components
+- **Radix UI** - Low-level UI component library
+- **FontAwesome** - Icon library and toolkit
+- **Hero Icons** - Beautiful hand-crafted SVG icons
+- **Lucide React** - Beautiful & consistent icon set
+
+### Development Tools
+- **TurboPack** - Incremental bundler and build system
+- **ESLint** - Code linting and static analysis
+- **PostCSS** - CSS transformation tool
+
+### Authentication & Database
+- **Better Auth** - Authentication system
+- **PostgreSQL** - Robust relational database (via `pg` driver)
+
+## 🛠️ Project Structure
+
+```
+soccer-camp/
+├── src/
+│   ├── app/         # App router components and pages
+│   ├── components/  # Reusable UI components
+│   ├── lib/         # Utility functions and shared logic
+│   ├── pages/       # Pages directory
+│   └── middleware.js # Next.js middleware
+├── public/          # Static assets
+└── ...config files
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚦 Getting Started
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Set up your environment variables:
+   ```bash
+   cp .env.example .env.local
+   ```
+4. Run the development server:
+   ```bash
+   npm run dev
+   ```
+   The application will be available at [http://localhost:3000](http://localhost:3000)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🔑 Features
 
-## Learn More
+- Modern, responsive design with Tailwind CSS
+- Interactive navigation with mobile-friendly menu
+- Smooth animations and transitions
+- Component-based architecture
+- Type-safe development environment
+- Authentication and authorization
+- Database integration
 
-To learn more about Next.js, take a look at the following resources:
+## 📝 Scripts
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `npm run dev` - Start development server with TurboPack
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint for code quality
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🤝 Contributing
 
-## Deploy on Vercel
+Contributions, issues, and feature requests are welcome! Feel free to check the issues page.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📄 License
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project is private and proprietary. All rights reserved.
