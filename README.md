@@ -5,7 +5,7 @@ A web application for managing soccer camp registrations and activities, with fo
 ## Technologies
 
 ### Frontend
-- **Next.js 15** - React framework 
+- **Next.js 15** - React framework, handles server side rendering & client components
 - **React 19**
 - **Tailwind CSS 4** 
 - **Headless UI** 
