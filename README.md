@@ -14,12 +14,13 @@ A web application for managing soccer camp registrations and activities, with fo
 - **Hero Icons** 
 - **Lucide React**
 
-### Authentication & Database
-- **Better Auth** - Authentication system
+### Authentication, Database & Payment
+- **Better Auth** - Authentication system for handling user sessions
 - **PostgreSQL** - Relational database for storing users info and sesessions
+- **Stripe** - Easy way to make payments
 
 ### Development Tools
-- **TurboPack** - Incremental bundler and build system
+- **TurboPack** - bundler and build system
 - **ESLint** - for Code linting 
 - **PostCSS** - CSS transformation tool
 
