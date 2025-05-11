@@ -2,6 +2,7 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
+import { PrismaClient } from "../../../../generated/prisma";
 
 export const signUserIn = async (data) => {
   const session = await auth.api.getSession({
@@ -24,6 +25,18 @@ export const signUserIn = async (data) => {
 };
 
 export const signUpUser = async (data) => {
+  // const prisma = PrismaClient()
+  // await prisma.user.create({
+  //   data: {
+  //     name: "testName",
+  //     email: "test@gmail.com",
+  //     emailVerified: false,
+  //     createdAt: new Date(),
+  //     updatedAt: new Date(),
+  //     id: "sd"
+  //   } 
+  // });
+
   const session = await auth.api.getSession({
     headers: await headers(),
   });
