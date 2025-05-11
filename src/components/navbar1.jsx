@@ -111,10 +111,12 @@ const Navbar1 = ({
   }
 }) => {
   return (
-    <section className="py-4">
-      <div className="px-2 pb-1 border-b-2">
+
+    <section className="">
+      
+      <div className="py-2 px-2 pb-2">
         {/* Desktop Menu */}
-        <nav className="hidden justify-between lg:flex">
+        <nav className=" hidden justify-between lg:flex">
           <div className="flex items-center gap-6">
             {/* Logo */}
             <a href={logo.url} className="flex items-center gap-2">

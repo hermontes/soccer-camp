@@ -9,6 +9,7 @@ import {
 } from "@/components/forms/form-validation";
 import Link from "next/link";
 
+
 export default function SignUpPage() {
   const router = useRouter();
 
@@ -228,7 +229,7 @@ export default function SignUpPage() {
             Already a member?{" "}
             <Link
               href="/login"
-              className="font-semibold text-indigo-600 hover:text-indigo-500"
+              className="font-semibold text-[#4CAF50] hover:text-[#3e8e41]"
             >
               Log in
             </Link>
