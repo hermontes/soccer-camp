@@ -6,10 +6,10 @@ function SubmitButton({ isSubmitting, pendingMessage, defaultMessage }) {
     <button
       disabled={isSubmitting}
       type="submit"
-      className={`flex w-full justify-center rounded-md  px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs  focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${
+      className={`flex w-full justify-center rounded-md  px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs  focus-visible:outline-2 focus-visible:outline-offset-2  ${
         isSubmitting
-          ? `bg-indigo-300`
-          : `bg-indigo-600 hover:bg-indigo-500 cursor-pointer`
+          ? `bg-[#4CAF50]/50`
+          : `bg-[#4CAF50] hover:bg-[#3e8e41] cursor-pointer`
       } `}
     >
       {isSubmitting ? pendingMessage : defaultMessage}
