@@ -1,5 +1,5 @@
 "use client";
-import Navigation from "@/components/ui/navigation/Navigation";
+import Navigation from "@/components/navigation/Navigation";
 import { Button } from "@/components/ui/button";
 import { useSession } from "@/lib/auth-client";
 import Link from "next/link";
@@ -14,7 +14,6 @@ import {
 } from "@/components/ui/card";
 
 export default function HomePage() {
-
   return (
     <div className="flex flex-col min-h-screen">
       <section className="w-full py-10 md:py-24 lg:py-32 bg-[#4CAF50] text-white">
