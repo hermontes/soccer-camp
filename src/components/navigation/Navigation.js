@@ -49,7 +49,7 @@ function classNames(...classes) {
 }
 
 export default function Navigation({ session }) {
-  // const { data: session, refetch, isPending } = useSession();
+
   const router = useRouter();
   const [dropDown, setDropDown] = useState(false);
 
