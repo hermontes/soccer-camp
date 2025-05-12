@@ -5,9 +5,10 @@ import { nextCookies } from "better-auth/next-js";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 
 // import { Pool } from "pg";
-import { PrismaClient } from '../../generated/prisma'
+import { PrismaClient } from "../../generated/prisma";
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
+
 
 export const auth = betterAuth({
   // secret: process.env.BETTER_AUTH_SECRET,
@@ -15,6 +16,17 @@ export const auth = betterAuth({
     enabled: true,
     autoSignIn: true,
   },
+  // emailVerification: {
+  //   requireEmailVerification: true,
+  //   sendOnSignUp: true,
+  //   sendVerificationEmail: async ({ user, url, token }, request) => {
+  //     await sendEmail({
+  //       to: user.email,
+  //       subject: "Verify your email address",
+  //       text: `Click the link to verify your email: ${url}`,
+  //     });
+  //   },
+  // },
   // database: new Pool({
   //   user: process.env.POSTGRES_DATABASE_USER,
   //   host: "localhost",
