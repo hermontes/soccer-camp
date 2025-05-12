@@ -14,7 +14,6 @@ import {
 } from "@/components/ui/card";
 
 export default function HomePage() {
-  const { data: session } = useSession();
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -165,7 +164,7 @@ export default function HomePage() {
                     asChild
                     className="w-full bg-[#4CAF50] hover:bg-[#3e8e41]"
                   >
-                    <Link href="/register">Register for this Group</Link>
+                    <Link href="/signup">Register for this Group</Link>
                   </Button>
                 </CardFooter>
               </Card>
