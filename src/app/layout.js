@@ -1,17 +1,28 @@
 import "./globals.css";
-import Navigation1 from "@/components/ui/navigation/Navigation";
-import { Navbar1 } from "@/components/navbar1";
+
+// import { Navbar1 } from "@/components/navbar1";
 import Navigation from "@/components/ui/navigation/Navigation";
+
+import { headers } from "next/headers";
+import { auth } from "@/lib/auth";
+
+
 export const metadata = {
   title: "Summer Camp",
   description: "Summer Soccer Camp registration for youth all ages",
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+
+
+  const session = await auth.api.getSession({
+    headers: await headers()
+  });
+
   return (
     <html lang="en">
       <body className="bg-[#F9FAFB]">
-        <Navigation></Navigation>
+        <Navigation session={session} ></Navigation>
         {/* <Navbar1></Navbar1> */}
 
         {children}
