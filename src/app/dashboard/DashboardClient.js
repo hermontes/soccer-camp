@@ -100,13 +100,12 @@ export default function DashboardClient({ user }) {
             <div className="mt-4 space-y-2">
               <div className="flex items-center justify-between text-sm">
                 <span className="text-muted-foreground">
-                  Email Varification:
+                  Email Verification:
                 </span>
                 <span className="font-medium">
                   {user.emailVerified === false ? (
-                    <Badge className="bg-amber-700">Not Varified</Badge>
+                    <Badge className="bg-amber-700">Not Verified</Badge>
                   ) : (
-                    <Badge className="bg-[#4CAF50]">Varified</Badge>
                   )}
                 </span>
               </div>
