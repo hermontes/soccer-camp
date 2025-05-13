@@ -106,6 +106,7 @@ export default function DashboardClient({ user }) {
                   {user.emailVerified === false ? (
                     <Badge className="bg-amber-700">Not Verified</Badge>
                   ) : (
+                    <Badge className="bg-[#4CAF50]">Verified</Badge>
                   )}
                 </span>
               </div>
