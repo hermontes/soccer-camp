@@ -6,7 +6,7 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 
 // import { Pool } from "pg";
 import { PrismaClient } from "../../generated/prisma";
-
+import { sendEmail } from "@/app/utils/authentication/mail";
 const prisma = new PrismaClient();
 
 
@@ -17,17 +17,20 @@ export const auth = betterAuth({
     enabled: true,
     autoSignIn: true,
   },
-  // emailVerification: {
-  //   requireEmailVerification: true,
-  //   sendOnSignUp: true,
-  //   sendVerificationEmail: async ({ user, url, token }, request) => {
-  //     await sendEmail({
-  //       to: user.email,
-  //       subject: "Verify your email address",
-  //       text: `Click the link to verify your email: ${url}`,
-  //     });
-  //   },
-  // },
+  emailVerification: {
+    sendVerificationEmail: async ({ user, url, token }, request) => {
+      const verificationURL = `${process.env.BETTER_AUTH_URL}/api/auth/verify-email?token=${token}&callbackURL=${process.env.VERIFIED_EMAIL_REDIRECT}`
+      await sendEmail({
+        to: user.email,
+        subject: "Verify your email address",
+        text: `Click the link to verify your email: ${verificationURL}`,
+      });
+    },
+    sendOnSignUp: true, //send verification email on sign up
+    autoSignInAfterVerification: true,
+    // requireEmailVerification: true //have to verfiy before can login
+
+  },
   // database: new Pool({
   //   user: process.env.POSTGRES_DATABASE_USER,
   //   host: "localhost",
