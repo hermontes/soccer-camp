@@ -137,7 +137,7 @@ export default function DashboardClient({ user }) {
           </CardContent>
         </Card>
       </div>
-      <div className="flex w-full flex-col items-center p-[10rem]">
+      {/* <div className="flex w-full flex-col items-center p-[10rem]">
         <div className="">Current session user name: {user.name}</div>
         <div>Current session user email: {user.email}</div>
         <div>Current session user ID: {user.id}</div>{" "}
@@ -167,7 +167,7 @@ export default function DashboardClient({ user }) {
         >
           Update User
         </button>
-      </div>
+      </div> */}
     </>
   );
 }
