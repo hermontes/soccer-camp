@@ -18,28 +18,29 @@ import { authClient } from "@/lib/auth-client";
 // };
 
 export const signUserIn = async (data) => {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+  try {
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
 
-  //if they attempt to sign in while there's already a session in this browser, we forbid it and force them to the dashboard
-  if (!session) {
-     const res = await auth.api.signInEmail({
+    //if they attempt to sign in while there's already a session in this browser, we forbid it and force them to the dashboard
+    if (session) {
+      redirect("/dashboard");
+    }
+    const response = await auth.api.signInEmail({
       body: {
         email: data.email,
         password: data.password,
-        rememberMe: false
+        rememberMe: false,
       },
     });
-    return res
-  } else {
-    // console.log((await session).user.name)
-    throw redirect("/dashboard");
+    return response;
+  } catch (error) {
+    return error;
   }
 };
 
 export const signUpUser = async (data) => {
-
   const session = await auth.api.getSession({
     headers: await headers(),
   });
