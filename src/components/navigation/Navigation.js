@@ -1,16 +1,5 @@
 "use client";
 
-// import {
-//   Disclosure,
-//   DisclosureButton,
-//   DisclosurePanel,
-//   MenuButton,
-//   MenuItem,
-//   MenuItems,
-// } from "@headlessui/react";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
-// import { useSession } from "@/lib/auth-client";
 import Link from "next/link";
 
 import {
@@ -41,7 +30,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useState } from "react";
-
+import { NavContext } from "@/app/dashboard/DashboardClient";
+import { useContext } from "react";
 // import { Loader } from "lucide-react";
 
 function classNames(...classes) {
@@ -49,9 +39,10 @@ function classNames(...classes) {
 }
 
 export default function Navigation({ session }) {
-
   const router = useRouter();
   const [dropDown, setDropDown] = useState(false);
+
+  const passed = useContext(NavContext);
 
   const toggleDropDown = () => {
     setDropDown((prev) => !prev);
@@ -87,6 +78,7 @@ export default function Navigation({ session }) {
 
   return (
     <section className="">
+      
       <header className="w-full border-b bg-white shadow-sm">
         <div className=" mx-auto flex h-16 items-center justify-between px-2">
           <Link href="/" className="font-bold text-xl flex items-center">
@@ -100,31 +92,31 @@ export default function Navigation({ session }) {
               Home
             </Link>
             <Link
-              href="#"
+              href="/dashboard"
               className="text-sm font-medium text-gray-800 hover:text-[#4CAF50] transition-colors"
             >
               Programs
             </Link>
             <Link
-              href="#"
+              href="/dashboard"
               className="text-sm font-medium text-gray-800 hover:text-[#4CAF50] transition-colors"
             >
               Schedule
             </Link>
             <Link
-              href="#"
+              href="/dashboard"
               className="text-sm font-medium text-gray-800 hover:text-[#4CAF50] transition-colors"
             >
               Facilities
             </Link>
             <Link
-              href="#"
+              href="/dashboard"
               className="text-sm font-medium text-gray-800 hover:text-[#4CAF50] transition-colors"
             >
               FAQ
             </Link>
             <Link
-              href="#"
+              href="/dashboard"
               className="text-sm font-medium text-gray-800 hover:text-[#4CAF50] transition-colors"
             >
               Contact
@@ -149,8 +141,11 @@ export default function Navigation({ session }) {
               </>
             ) : (
               <>
-                <DropdownMenu onOpenChange={setDropDown} className="outline-none">
-                  <DropdownMenuTrigger asChild >
+                <DropdownMenu
+                  onOpenChange={setDropDown}
+                  className="outline-none"
+                >
+                  <DropdownMenuTrigger asChild>
                     <Button
                       variant="ghost"
                       className="flex items-center gap-2 p-1 px-2 h-auto hover:bg-gray-100 rounded-full cursor-pointer"
@@ -174,9 +169,14 @@ export default function Navigation({ session }) {
                       )}
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-40">
+
+                  <DropdownMenuContent
+                    align="end"
+                    className="w-35 rounded-b-md mt-2 !shadow-xl "
+                  >
                     <DropdownMenuLabel>My Account</DropdownMenuLabel>
                     <DropdownMenuSeparator />
+
                     <DropdownMenuItem asChild>
                       <Link href="/dashboard" className="cursor-pointer w-full">
                         <LayoutDashboard className="mr-2 h-4 w-4" />
@@ -240,31 +240,31 @@ export default function Navigation({ session }) {
                     Home
                   </Link>
                   <Link
-                    href="#"
+                    href="/dashboard"
                     className="text-sm font-medium hover:text-[#4CAF50] transition-colors"
                   >
                     Programs
                   </Link>
                   <Link
-                    href="#"
+                    href="/dashboard"
                     className="text-sm font-medium hover:text-[#4CAF50] transition-colors"
                   >
                     Schedule
                   </Link>
                   <Link
-                    href="#"
+                    href="/dashboard"
                     className="text-sm font-medium hover:text-[#4CAF50] transition-colors"
                   >
                     Facilities
                   </Link>
                   <Link
-                    href="#"
+                    href="/dashboard"
                     className="text-sm font-medium hover:text-[#4CAF50] transition-colors"
                   >
                     FAQ
                   </Link>
                   <Link
-                    href="#"
+                    href="/dashboard"
                     className="text-sm font-medium hover:text-[#4CAF50] transition-colors"
                   >
                     Contact
