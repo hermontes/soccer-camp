@@ -9,6 +9,7 @@ import {
   DisplayErrorMessage,
 } from "@/components/forms/form-validation";
 import { useState } from "react";
+import { Loader2 } from "lucide-react";
 
 export default function LogInPage() {
   const [invalidLogin, setInvalidLogin] = useState(false);
@@ -31,8 +32,8 @@ export default function LogInPage() {
         if (response) {
           console.log("success: ", response);
           setInvalidLogin(false);
-          reset();
           router.push("/dashboard");
+          // reset();
         } else {
           setInvalidLogin(true);
         }
@@ -140,7 +141,6 @@ export default function LogInPage() {
               <SubmitButton
                 isSubmitting={isSubmitting}
                 defaultMessage={"Log In"}
-                pendingMessage={"Logging In.."}
               />
             </div>
           </form>

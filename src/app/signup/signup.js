@@ -220,7 +220,6 @@ export default function SignUpPage() {
               <SubmitButton
                 isSubmitting={isSubmitting}
                 defaultMessage={"Sign Up"}
-                pendingMessage={"Signing up.."}
               />
             </div>
           </form>

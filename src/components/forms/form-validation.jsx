@@ -1,7 +1,8 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamation } from "@fortawesome/free-solid-svg-icons";
+import { Loader2 } from "lucide-react";
 
-function SubmitButton({ isSubmitting, pendingMessage, defaultMessage }) {
+function SubmitButton({ isSubmitting, defaultMessage }) {
   return (
     <button
       disabled={isSubmitting}
@@ -12,7 +13,7 @@ function SubmitButton({ isSubmitting, pendingMessage, defaultMessage }) {
           : `bg-[#4CAF50] hover:bg-[#3e8e41] cursor-pointer`
       } `}
     >
-      {isSubmitting ? pendingMessage : defaultMessage}
+      {isSubmitting ?<Loader2 className="animate-spin"/> : defaultMessage}
     </button>
   );
 }
