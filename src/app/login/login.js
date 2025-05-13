@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { signUserIn } from "@/app/utils/authentication/users-auth";
+import { signUserIn } from "@/app/utils/authentication/users-auth-validation";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import {
@@ -40,8 +40,8 @@ export default function LogInPage() {
             duration: 2000,
             // icon: <Check className="w-4 h-4 text-[#4CAF50]"/>,
             cancel: {
-              label: <Check className="w-5 h-10 text-[#4CAF50]"/>
-            }
+              label: <Check className="w-5 h-10 text-[#4CAF50]" />,
+            },
           });
           router.push("/dashboard");
         } else {

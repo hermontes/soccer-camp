@@ -2,13 +2,12 @@
 
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { signUpUser } from "@/app/utils/authentication/users-auth";
+import { signUpUser } from "@/app/utils/authentication/users-auth-validation";
 import {
   SubmitButton,
   DisplayErrorMessage,
 } from "@/components/forms/form-validation";
 import Link from "next/link";
-
 
 export default function SignUpPage() {
   const router = useRouter();
@@ -41,7 +40,6 @@ export default function SignUpPage() {
       .catch((error) => {
         if (error) {
           //TODO: message: Sign in to this account or enter an email address that isn't already in use.
-
 
           console.log(error);
         }
@@ -175,11 +173,9 @@ export default function SignUpPage() {
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                 />
                 {errors.password && (
-
-                    <DisplayErrorMessage
-                      message={errors.password.message}
-                    ></DisplayErrorMessage>
-
+                  <DisplayErrorMessage
+                    message={errors.password.message}
+                  ></DisplayErrorMessage>
                 )}
               </div>
             </div>
@@ -197,8 +193,10 @@ export default function SignUpPage() {
                   {...register("confirmPassword", {
                     required: "Confirm your password",
                     validate: (val) => {
-                      return getValues("password") === val || "Passwords do not match. Try again."
-
+                      return (
+                        getValues("password") === val ||
+                        "Passwords do not match. Try again."
+                      );
                     },
                   })}
                   id="confirmPassword"
@@ -209,10 +207,10 @@ export default function SignUpPage() {
                 />
                 {errors.confirmPassword && (
                   <>
-                  <DisplayErrorMessage
-                    message={errors.confirmPassword.message}
-                  />
-                 </>
+                    <DisplayErrorMessage
+                      message={errors.confirmPassword.message}
+                    />
+                  </>
                 )}
               </div>
             </div>
