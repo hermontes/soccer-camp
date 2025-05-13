@@ -9,8 +9,10 @@ import {
   DisplayErrorMessage,
 } from "@/components/forms/form-validation";
 import { useState } from "react";
-import { Loader2, Eye, EyeOff, EyeClosed } from "lucide-react";
+import { Loader2, Eye, EyeOff, EyeClosed, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
+
+import { toast } from "sonner";
 
 export default function LogInPage() {
   const [invalidLogin, setInvalidLogin] = useState(false);
@@ -34,7 +36,13 @@ export default function LogInPage() {
         //if we get a user back, that means login for this user was a success
         if (response.user) {
           console.log("success: ", response);
-          setInvalidLogin(false);
+          toast("Successfully signed in.", {
+            duration: 2000,
+            // icon: <Check className="w-4 h-4 text-[#4CAF50]"/>,
+            cancel: {
+              label: <Check className="w-5 h-10 text-[#4CAF50]"/>
+            }
+          });
           router.push("/dashboard");
         } else {
           //if we get a response but there was no user, that means it successfully completed the sign in logic,
@@ -49,7 +57,8 @@ export default function LogInPage() {
         //in the case that there's already a session or something went wrong with the login api
         console.log("Error while trying to login: ", error);
         setInvalidLogin(true);
-      });
+      })
+      .finally(() => {});
   };
 
   return (
