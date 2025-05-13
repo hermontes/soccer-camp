@@ -5,6 +5,7 @@ import Navigation from "@/components/navigation/Navigation";
 
 import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata = {
   title: "Summer Camp",
@@ -21,8 +22,8 @@ export default async function RootLayout({ children }) {
       <body className="bg-[#F9FAFB]">
         <Navigation session={session}></Navigation>
         {/* <Navbar1></Navbar1> */}
-
         {children}
+        <Toaster />
       </body>
     </html>
   );
