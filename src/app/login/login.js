@@ -31,16 +31,22 @@ export default function LogInPage() {
   const handleLogIn = async (data) => {
     await signUserIn(data)
       .then((response) => {
-        if (response) {
+        //if we get a user back, that means login for this user was a success
+        if (response.user) {
           console.log("success: ", response);
           setInvalidLogin(false);
           router.push("/dashboard");
-          // reset();
         } else {
+          //if we get a response but there was no user, that means it successfully completed the sign in logic,
+          //but it found no user associate with this email or password
+          console.log("new account?: ", response);
+          console.log("create a new account buyyooo");
           setInvalidLogin(true);
         }
+        // reset();
       })
       .catch((error) => {
+        //in the case that there's already a session or something went wrong with the login api
         console.log("Error while trying to login: ", error);
         setInvalidLogin(true);
       });
@@ -153,7 +159,9 @@ export default function LogInPage() {
               </div>
             </div>
             {invalidLogin && (
-              <DisplayErrorMessage message={"Email or password is incorrect"} />
+              <DisplayErrorMessage
+                message={"Email or password is incorrect. "}
+              />
             )}
             <div>
               <SubmitButton
