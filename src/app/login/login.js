@@ -157,12 +157,15 @@ export default function LogInPage() {
                   <DisplayErrorMessage message={errors.password.message} />
                 )}
               </div>
+              {invalidLogin && (
+                <div className="pt-3">
+                  <DisplayErrorMessage
+                    message={"Email or password is incorrect. "}
+                  />
+                </div>
+              )}
             </div>
-            {invalidLogin && (
-              <DisplayErrorMessage
-                message={"Email or password is incorrect. "}
-              />
-            )}
+
             <div>
               <SubmitButton
                 isSubmitting={isSubmitting}
