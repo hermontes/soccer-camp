@@ -9,10 +9,12 @@ import {
   DisplayErrorMessage,
 } from "@/components/forms/form-validation";
 import { useState } from "react";
-import { Loader2 } from "lucide-react";
+import { Loader2, Eye, EyeOff, EyeClosed } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function LogInPage() {
   const [invalidLogin, setInvalidLogin] = useState(false);
+  const [showPass, setShowPass] = useState(false);
 
   const {
     register,
@@ -111,24 +113,40 @@ export default function LogInPage() {
                 </div>
               </div>
               <div className="mt-2">
-                <input
-                  {...register("password", {
-                    required: "Please enter your password",
-                    minLength: {
-                      value: 8,
-                      message: "Minimum length of 8 characters required",
-                    },
-                    maxLength: {
-                      value: 80,
-                      message: "Exceeded maximum length of 80 characters",
-                    },
-                  })}
-                  id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="current-password"
-                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                />
+                <div className="relative ">
+                  <input
+                    {...register("password", {
+                      required: "Please enter your password",
+                      minLength: {
+                        value: 8,
+                        message: "Minimum length of 8 characters required",
+                      },
+                      maxLength: {
+                        value: 80,
+                        message: "Exceeded maximum length of 80 characters",
+                      },
+                    })}
+                    id="password"
+                    name="password"
+                    type={showPass ? "text" : "password"}
+                    autoComplete="current-password"
+                    className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                  />
+
+                  <button
+                    type="button"
+                    className="absolute bg-white pt-1.5 pb-1.5 px-0.5 cursor-pointer top-1 right-1 outline-none"
+                    onClick={() => setShowPass((prev) => !prev)}
+                  >
+                    <div className="hover:bg-gray-50 px-1 rounded-full">
+                      {showPass ? (
+                        <EyeOff className="h-4 w-4" aria-hidden="true" />
+                      ) : (
+                        <Eye className="h-4 w-4" aria-hidden="true" />
+                      )}
+                    </div>
+                  </button>
+                </div>
                 {errors.password && (
                   <DisplayErrorMessage message={errors.password.message} />
                 )}
