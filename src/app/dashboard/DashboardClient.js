@@ -12,10 +12,14 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { Clock } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
+import { createContext } from "react";
+export const NavContext = createContext(1);
 
 export default function DashboardClient({ user }) {
   const [newName, setNewName] = useState("");
   const [newImage, setNewImage] = useState("");
+
+  const router = useRouter();
 
   const {
     data: session,
@@ -26,24 +30,35 @@ export default function DashboardClient({ user }) {
   } = useSession();
 
   const updateUser = async () => {
-    await authClient.updateUser({
-      image: newImage,
-      name: newName,
-    });
+    try {
+      const response = await authClient.updateUser({
+        image: newImage,
+        name: newName,
+      });
+
+      if (response?.data?.status === true) {
+        console.log("Success updating user", response);
+        // Handle success - maybe show a toast notification
+      } else {
+        //if updating wasn't a success, we refresh page since it's most likely due to a 401 unauthorized error(no session)
+        console.log("Unauthorized - user session expired");
+
+        router.refresh();
+      }
+    } catch (error) {
+      // Handle unauthorized - redirect to login
+      router.push("/login");
+      console.log("Error updating user:", error.message);
+      // Handle other errors
+    }
   };
 
-  useEffect(() => {
-    refetch();
-  }, []);
+  // useEffect(() => {
+  //   refetch();
+  // }, []);
 
-  const router = useRouter();
-
-  const listSessions = async () => {
-
-
+  const signUserOut = async () => {
     try {
-
-
       const w = await authClient.signOut();
 
       // const sessions = await authClient.listSessions();
@@ -63,7 +78,7 @@ export default function DashboardClient({ user }) {
               Registration Status
             </CardTitle>
             <Badge
-              variant={session?.user ? "default" : "outline"}
+              variant={user ? "default" : "outline"}
               className="bg-[#4CAF50]"
             >
               Confirmed
@@ -72,19 +87,14 @@ export default function DashboardClient({ user }) {
           <CardContent>
             <div className="flex items-center space-x-4">
               <Avatar>
-                <AvatarImage className=""
-                  src={session?.user.image || "/placeholder.svg"}
-                  alt={session?.user.name}
-                />
-                <AvatarFallback className="bg-muted">{session?.user.name.charAt(0)}</AvatarFallback>
+                <AvatarImage className="" src={user.image} alt={user.name} />
+                <AvatarFallback className="bg-muted">
+                  {user.name.charAt(0)}
+                </AvatarFallback>
               </Avatar>
               <div>
-                <p className="text-sm font-medium leading-none">
-                  {session?.user.name}
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  {session?.user.email}
-                </p>
+                <p className="text-sm font-medium leading-none">{user.name}</p>
+                <p className="text-sm text-muted-foreground">{user.email}</p>
               </div>
             </div>
             <div className="mt-4 space-y-2">
@@ -93,7 +103,7 @@ export default function DashboardClient({ user }) {
                   Email Varification:
                 </span>
                 <span className="font-medium">
-                  {session?.user.emailVerified === false ? (
+                  {user.emailVerified === false ? (
                     <Badge className="bg-amber-700">Not Varified</Badge>
                   ) : (
                     <Badge className="bg-[#4CAF50]">Varified</Badge>
@@ -102,7 +112,7 @@ export default function DashboardClient({ user }) {
               </div>
               <div className="flex items-center justify-between text-sm">
                 <span className="text-muted-foreground">Registration ID:</span>
-                <span className="font-medium">{session?.user.id.slice(0,6)}</span>
+                <span className="font-medium">{user.id.slice(0, 6)}</span>
               </div>
             </div>
           </CardContent>
@@ -133,7 +143,7 @@ export default function DashboardClient({ user }) {
         <div>Current session user ID: {user.id}</div>{" "}
         <button
           className="cursor-grab bg-cyan-500 p-[1rem]"
-          onClick={listSessions}
+          onClick={signUserOut}
         >
           Sign out
         </button>
@@ -144,7 +154,8 @@ export default function DashboardClient({ user }) {
           onChange={(e) => setNewName(e.target.value)}
           placeholder="Set new name..."
         />
-        <input className="outline-none"
+        <input
+          className="outline-none"
           type="name"
           value={newImage}
           onChange={(e) => setNewImage(e.target.value)}
