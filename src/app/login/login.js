@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+
 import { signUserIn } from "@/app/utils/authentication/users-auth-validation";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
@@ -14,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { useSession } from "@/lib/auth-client";
 
 import { toast } from "sonner";
+import { APIError } from "better-auth/api";
 
 export default function LogInPage() {
   const [invalidLogin, setInvalidLogin] = useState(false);
@@ -34,63 +36,55 @@ export default function LogInPage() {
   const router = useRouter();
 
   const handleLogIn = async (data) => {
-    await signUserIn(data)
-      .then((response) => {
-        //if we get a user back, that means login for this user was a success
-        if (response.user) {
-          console.log("success: ", response);
-          //refetch the current session so other session with this tab can get the current session
-          // later: move this logic in one session fetch that gets used throughout the app using useContext
-          refetch();
-          toast("Successfully signed in.", {
-            duration: 2000,
-            // icon: <Check className="w-4 h-4 text-[#4CAF50]"/>,
-            cancel: {
-              label: <Check className="w-5 h-10 text-[#4CAF50]" />,
-            },
-          });
-          router.push("/dashboard");
-        } else {
-          //if we get a response but there was no user, that means it successfully completed the sign in logic,
-          //but it found no user associate with this email or password
-          if (response.message === "Email not verified") {
-            toast("Email verification is required", {
-              type: "error",
-              description:
-                "Check your email inbox or spam folder for verification link",
-              style: {
-                color: "black",
-              },
-            });
-            console.log("In Email not verified block", response.message);
-          } else {
-            console.log(
-              "In else statement of Email not verified block",
-              response.message
-            );
-            console.log(
-              "This must mean there's no account with this login attempt"
-            );
-            toast("No account with that email address", {
-              type: "error",
-              description:
-                "Click sign up to create an account please",
-              style: {
-                color: "black",
-              },
-            });
-          }
+    try {
+      const response = await signUserIn(data);
 
-          setInvalidLogin(true);
-        }
-        // reset();
-      })
-      .catch((error) => {
-        //in the case that there's already a session or something went wrong with the login api
-        console.log("Error while trying to login: ", error);
-        setInvalidLogin(true);
-      })
-      .finally(() => {});
+      // Successful login with valid user
+      if (response.user) {
+        refetch(); // Refresh session data
+
+        toast("Successfully signed in.", {
+          duration: 2000,
+          cancel: {
+            label: <Check className="w-5 h-5 text-[#4CAF50]" />,
+          },
+        });
+
+        router.push("/dashboard");
+        return;
+      }
+
+      // Handle API errors
+      // if (response instanceof APIError) {
+      setInvalidLogin(true);
+
+      // Handle specific error cases
+      if (response.message === "Email not verified") {
+        toast("Email verification is required", {
+          type: "error",
+          description:
+            "Check your email inbox or spam folder for verification link",
+          style: { color: "black" },
+        });
+      } else {
+        // Generic account not found error
+        toast("No account with that email address", {
+          type: "error",
+          description: "Click sign up to create an account please",
+          style: { color: "black" },
+        });
+      }
+    } catch (error) {
+      // Handle unexpected errors
+      console.error("Login failed:", error);
+      setInvalidLogin(true);
+
+      toast("Sign in failed", {
+        type: "error",
+        description: "An unexpected error occurred. Please try again.",
+        style: { color: "black" },
+      });
+    }
   };
 
   return (
