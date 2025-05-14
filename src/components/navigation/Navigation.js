@@ -128,7 +128,7 @@ export default function Navigation() {
             </Link>
           </nav>
           <div className="flex items-center gap-4">
-            {!session & !isPending ? (
+            {!session && !isPending ? (
               <>
                 <Button
                   variant="outline"
