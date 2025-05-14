@@ -18,7 +18,7 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-import { authClient } from "@/lib/auth-client";
+
 import { useRouter } from "next/navigation";
 
 import {
@@ -33,12 +33,18 @@ import { useState } from "react";
 import { NavContext } from "@/app/dashboard/DashboardClient";
 import { useContext } from "react";
 // import { Loader } from "lucide-react";
+import { useSession } from "@/lib/auth-client";
+import { Skeleton } from "../ui/skeleton";
+import { authClient } from "@/lib/auth-client"
 
 function classNames(...classes) {
+
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Navigation({ session }) {
+export default function Navigation() {
+  const { data: session, isPending } = authClient.useSession();
+
   const router = useRouter();
   const [dropDown, setDropDown] = useState(false);
 
@@ -78,7 +84,6 @@ export default function Navigation({ session }) {
 
   return (
     <section className="">
-      
       <header className="w-full border-b bg-white shadow-sm">
         <div className=" mx-auto flex h-16 items-center justify-between px-2">
           <Link href="/" className="font-bold text-xl flex items-center">
@@ -95,7 +100,7 @@ export default function Navigation({ session }) {
               href="/dashboard"
               className="text-sm font-medium text-gray-800 hover:text-[#4CAF50] transition-colors"
             >
-              Programs
+              {passed === 2 ? " passed" : passed}
             </Link>
             <Link
               href="/dashboard"
@@ -123,7 +128,7 @@ export default function Navigation({ session }) {
             </Link>
           </nav>
           <div className="flex items-center gap-4">
-            {!session ? (
+            {!session & !isPending ? (
               <>
                 <Button
                   variant="outline"
@@ -141,86 +146,83 @@ export default function Navigation({ session }) {
               </>
             ) : (
               <>
-                <DropdownMenu
-                  onOpenChange={setDropDown}
-                  className="outline-none"
-                >
-                  <DropdownMenuTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      className="flex items-center gap-2 p-1 px-2 h-auto hover:bg-gray-100 rounded-full cursor-pointer"
-                    >
-                      <Avatar>
-                        <AvatarImage
-                          src={session?.user.image || ""}
-                          alt={session?.user.name || "User"}
-                        />
-                        <AvatarFallback className="bg-[#4CAF50] text-white">
-                          {session?.user.name?.charAt(0) || "U"}
-                        </AvatarFallback>
-                      </Avatar>
-                      <span className="text-sm font-medium hidden md:inline">
-                        {session?.user.name}
-                      </span>
-                      {dropDown ? (
-                        <ChevronUp className="h-4 w-4 text-gray-500" />
-                      ) : (
-                        <ChevronDown className="h-4 w-4 text-gray-500" />
-                      )}
-                    </Button>
-                  </DropdownMenuTrigger>
+                {isPending ? (
+                  <div className="flex gap-1  items-center justify-center">
+                    <Skeleton className="size-8 rounded-full bg-[#4CAF50]/50" />
 
-                  <DropdownMenuContent
-                    align="end"
-                    className="w-35 rounded-b-md mt-2 !shadow-xl "
-                  >
-                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
+                    <Skeleton className="h-6 w-20 bg-[#4CAF50]/50" />
+                  </div>
+                ) : (
+                  <>
+                    <DropdownMenu
+                      onOpenChange={setDropDown}
+                      className="outline-none"
+                    >
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          className="flex items-center gap-2 p-1 px-2 h-auto hover:bg-gray-100 rounded-full cursor-pointer"
+                        >
+                          <Avatar>
+                            <AvatarImage
+                              src={session?.user.image || ""}
+                              alt={session?.user.name || "User"}
+                            />
+                            <AvatarFallback className="bg-[#4CAF50] text-white">
+                              {session?.user.name?.charAt(0) || "U"}
+                            </AvatarFallback>
+                          </Avatar>
+                          <span className="text-sm font-medium hidden md:inline">
+                            {session?.user.name}
+                          </span>
+                          {dropDown ? (
+                            <ChevronUp className="h-4 w-4 text-gray-500" />
+                          ) : (
+                            <ChevronDown className="h-4 w-4 text-gray-500" />
+                          )}
+                        </Button>
+                      </DropdownMenuTrigger>
 
-                    <DropdownMenuItem asChild>
-                      <Link href="/dashboard" className="cursor-pointer w-full">
-                        <LayoutDashboard className="mr-2 h-4 w-4" />
-                        <span>Dashboard</span>
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <Link href="/dashboard" className="cursor-pointer w-full">
-                        <Icon iconNode={soccerBall} className="mr-2 h-4 w-4" />
-                        <span>Team</span>
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem
-                      className="text-red-600 focus:text-red-600 cursor-pointer"
-                      onClick={() => signOut()}
-                    >
-                      <LogOut className="mr-2 h-4 w-4" />
-                      <span>Sign out</span>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                  {/* <DropdownMenuContent align="end" className="w-56">
-                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem>
-                      <Link href="/dashboard">Dashboard</Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Link href="/dashboard">Team</Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Link href="/dashboard">Notifications</Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem
-                      className="text-red-600 focus:text-red-600 hover:cursor-pointer"
-                      onClick={() => signOut()}
-                    >
-                      <LogOut className="mr-2 h-4 w-4" />
-                      <span>Sign out</span>
-                    </DropdownMenuItem>
-                    
-                  </DropdownMenuContent> */}
-                </DropdownMenu>
+                      <DropdownMenuContent
+                        align="end"
+                        className="w-35 rounded-b-md mt-2 !shadow-xl "
+                      >
+                        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+
+                        <DropdownMenuItem asChild>
+                          <Link
+                            href="/dashboard"
+                            className="cursor-pointer w-full"
+                          >
+                            <LayoutDashboard className="mr-2 h-4 w-4" />
+                            <span>Dashboard</span>
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                          <Link
+                            href="/dashboard"
+                            className="cursor-pointer w-full"
+                          >
+                            <Icon
+                              iconNode={soccerBall}
+                              className="mr-2 h-4 w-4"
+                            />
+                            <span>Team</span>
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem
+                          className="text-red-600 focus:text-red-600 cursor-pointer"
+                          onClick={() => signOut()}
+                        >
+                          <LogOut className="mr-2 h-4 w-4" />
+                          <span>Sign out</span>
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </>
+                )}
               </>
             )}
 
