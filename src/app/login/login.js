@@ -55,7 +55,9 @@ export default function LogInPage() {
       } else {
         // Temp solution: Standardize error handling regardless of message
         toast("Unable to sign in", {
+          duration: 7000,
           type: "error",
+          position: 'bottom-center',
           description: "Please check your credentials or verify your email",
         });
         setInvalidLogin(true);
