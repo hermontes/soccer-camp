@@ -16,6 +16,7 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
     autoSignIn: true,
+    requireEmailVerification: true
   },
   emailVerification: {
     sendVerificationEmail: async ({ user, url, token }, request) => {
@@ -23,7 +24,7 @@ export const auth = betterAuth({
       await sendEmail({
         to: user.email,
         subject: "Verify your email address",
-        text: `Click the link to verify your email: ${verificationURL}`,
+        text: `Click this link to confirm your email address and complete setup for your account: ${verificationURL}`,
       });
     },
     sendOnSignUp: true, //send verification email on sign up
