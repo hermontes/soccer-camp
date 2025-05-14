@@ -82,7 +82,7 @@ export default function Navigation() {
 
   return (
     <section className="">
-      <header className="w-full border-b bg-white shadow-sm">
+      <header className="w-full border-b bg-white shadow-sm px-2">
         <div className=" mx-auto flex h-16 items-center justify-between ">
           <Link href="/" className="font-bold text-xl flex items-center">
             <span className="text-[#4CAF50]">Soccer</span>Camp
