@@ -25,7 +25,7 @@ export default async function RootLayout({ children }) {
         <Navigation ></Navigation>
         {/* <Navbar1></Navbar1> */}
         {children}
-        <Toaster />
+        <Toaster theme="light"/>
       </body>
     </html>
   );

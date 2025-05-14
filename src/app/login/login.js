@@ -52,26 +52,31 @@ export default function LogInPage() {
 
         router.push("/dashboard");
         return;
-      }
-
-      // Handle API errors
-      // if (response instanceof APIError) {
-      setInvalidLogin(true);
-
-      // Handle specific error cases
-      if (response.message === "Email not verified") {
-        toast("Email verification is required", {
-          type: "error",
-          description:
-            "Check your email inbox or spam folder for verification link",
-        });
       } else {
-        // Generic account not found error
-        toast("No account with that email address", {
+        // Temp solution: Standardize error handling regardless of message
+        toast("Unable to sign in", {
           type: "error",
-          description: "Click sign up to create an account please",
+          description: "Please check your credentials or verify your email",
         });
+        setInvalidLogin(true);
       }
+
+
+      // Handle specific error cases, not working on prod at the moment
+      // if (response.message === "Email not verified") {
+      //   toast("Email verification is required", {
+      //     type: "error",
+      //     description:
+      //       "Check your email inbox or spam folder for verification link",
+      //   });
+      // } else {
+      //   // Generic account not found error
+      //   toast("No account with that email address", {
+      //     type: "error",
+      //     description: "Click sign up to create an account please",
+      //   });
+      // }
+     
     } catch (error) {
       // Handle unexpected errors
       console.error("Login failed:", error);
