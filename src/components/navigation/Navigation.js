@@ -229,7 +229,7 @@ export default function Navigation() {
             <Sheet>
               <SheetTrigger asChild>
                 <Button variant="outline" size="icon" className="md:hidden">
-                  <Menu className="h-5 w-5"> </Menu>
+                  <Menu className="h-5 w-5 cursor-pointer"> </Menu>
                   <span className="sr-only">Toggle menu</span>
                 </Button>
               </SheetTrigger>
