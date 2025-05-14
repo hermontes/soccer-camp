@@ -145,9 +145,9 @@ export default function Navigation() {
                 </Button>
               </>
             ) : (
-              <>
+              <div className="lg:w-42">
                 {isPending ? (
-                  <div className="flex gap-1  items-center justify-center">
+                  <div className="flex gap-1 items-center justify-center" >
                     <Skeleton className="size-8 rounded-full bg-[#4CAF50]/50" />
 
                     <Skeleton className="h-6 w-20 bg-[#4CAF50]/50" />
@@ -223,7 +223,7 @@ export default function Navigation() {
                     </DropdownMenu>
                   </>
                 )}
-              </>
+              </div>
             )}
 
             <Sheet>
