@@ -11,12 +11,15 @@ import {
 import { useState } from "react";
 import { Loader2, Eye, EyeOff, EyeClosed, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useSession } from "@/lib/auth-client";
 
 import { toast } from "sonner";
 
 export default function LogInPage() {
   const [invalidLogin, setInvalidLogin] = useState(false);
   const [showPass, setShowPass] = useState(false);
+
+  const { refetch} = useSession()
 
   const {
     register,
@@ -36,6 +39,9 @@ export default function LogInPage() {
         //if we get a user back, that means login for this user was a success
         if (response.user) {
           console.log("success: ", response);
+          //refetch the current session so other session with this tab can get the current session
+          // later: move this logic in one session fetch that gets used throughout the app using useContext
+          refetch() 
           toast("Successfully signed in.", {
             duration: 2000,
             // icon: <Check className="w-4 h-4 text-[#4CAF50]"/>,
