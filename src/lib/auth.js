@@ -24,12 +24,12 @@ export const auth = betterAuth({
       await sendEmail({
         to: user.email,
         subject: "Verify your email address",
-        text: `Click this link to confirm your email address and complete setup for your account: ${verificationURL}`,
+        text: `Click this link to confirm your email address and complete setup for your account. This verification link is only valid for 15 minutes: ${verificationURL}`,
       });
     },
     sendOnSignUp: true, //send verification email on sign up
     autoSignInAfterVerification: true,
-    // requireEmailVerification: true //have to verfiy before can login
+    expiresIn: 900 //verification token valid for 30 minutes
 
   },
   // database: new Pool({
