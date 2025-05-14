@@ -96,12 +96,12 @@ export default function Navigation() {
             >
               Home
             </Link>
-            <Link
+            {/* <Link
               href="/dashboard"
               className="text-sm font-medium text-gray-800 hover:text-[#4CAF50] transition-colors"
             >
               {passed === 2 ? " passed" : passed}
-            </Link>
+            </Link> */}
             <Link
               href="/dashboard"
               className="text-sm font-medium text-gray-800 hover:text-[#4CAF50] transition-colors"
