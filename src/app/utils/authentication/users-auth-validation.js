@@ -27,14 +27,14 @@ export const signUserIn = async (data) => {
     if (session) {
       redirect("/dashboard");
     }
-    const response = await auth.api.signInEmail({
+    return await auth.api.signInEmail({
       body: {
         email: data.email,
         password: data.password,
         rememberMe: false,
       },
     });
-    return response;
+    // return response;
   } catch (error) {
     return error;
   }

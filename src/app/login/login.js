@@ -47,7 +47,17 @@ export default function LogInPage() {
         } else {
           //if we get a response but there was no user, that means it successfully completed the sign in logic,
           //but it found no user associate with this email or password
-          console.log("new account?: ", response);
+          if (response.message === "Email not verified") {
+            toast("Email verification is required", {
+              type: "error",
+              description:
+                "Check your email inbox or spam folder for verification link",
+              style: {
+                color: "black",
+              },
+            });
+          }
+          console.log("new account?: ", response.message);
           console.log("create a new account buyyooo");
           setInvalidLogin(true);
         }
