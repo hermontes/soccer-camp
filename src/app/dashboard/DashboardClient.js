@@ -1,9 +1,9 @@
 "use client";
 
-import { useSession } from "@/lib/auth-client";
+
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import DynamicComponent from "./DynamicComponent";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -21,13 +21,6 @@ export default function DashboardClient({ user }) {
 
   const router = useRouter();
 
-  const {
-    data: session,
-    isPending,
-    error,
-    refetch,
-    removeSessions,
-  } = useSession();
 
   const updateUser = async () => {
     try {
