@@ -64,14 +64,12 @@ export default function LogInPage() {
           type: "error",
           description:
             "Check your email inbox or spam folder for verification link",
-          style: { color: "black" },
         });
       } else {
         // Generic account not found error
         toast("No account with that email address", {
           type: "error",
           description: "Click sign up to create an account please",
-          style: { color: "black" },
         });
       }
     } catch (error) {
@@ -82,7 +80,6 @@ export default function LogInPage() {
       toast("Sign in failed", {
         type: "error",
         description: "An unexpected error occurred. Please try again.",
-        style: { color: "black" },
       });
     }
   };
