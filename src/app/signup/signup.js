@@ -8,6 +8,7 @@ import {
   DisplayErrorMessage,
 } from "@/components/forms/form-validation";
 import Link from "next/link";
+import { toast } from "sonner";
 
 export default function SignUpPage() {
   const router = useRouter();
@@ -34,6 +35,14 @@ export default function SignUpPage() {
         if (res) {
           console.log(res);
         }
+        toast("Verification email has been sent", {
+          type: "success",
+          description:
+            "Check your email inbox or spam folder and click on the link to verify your email",
+          style: {
+            color: "black",
+          },
+        });
         router.push("/dashboard");
         reset();
       })
