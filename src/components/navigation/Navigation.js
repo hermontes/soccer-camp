@@ -18,7 +18,6 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-
 import { useRouter } from "next/navigation";
 
 import {
@@ -35,10 +34,9 @@ import { useContext } from "react";
 // import { Loader } from "lucide-react";
 import { useSession } from "@/lib/auth-client";
 import { Skeleton } from "../ui/skeleton";
-import { authClient } from "@/lib/auth-client"
+import { authClient } from "@/lib/auth-client";
 
 function classNames(...classes) {
-
   return classes.filter(Boolean).join(" ");
 }
 
@@ -85,7 +83,7 @@ export default function Navigation() {
   return (
     <section className="">
       <header className="w-full border-b bg-white shadow-sm">
-        <div className=" mx-auto flex h-16 items-center justify-between px-2">
+        <div className=" mx-auto flex h-16 items-center justify-between ">
           <Link href="/" className="font-bold text-xl flex items-center">
             <span className="text-[#4CAF50]">Soccer</span>Camp
           </Link>
@@ -145,9 +143,9 @@ export default function Navigation() {
                 </Button>
               </>
             ) : (
-              <div className="lg:w-42">
+              <>
                 {isPending ? (
-                  <div className="flex gap-1 items-center justify-center" >
+                  <div className="flex gap-1 items-center justify-center">
                     <Skeleton className="size-8 rounded-full bg-[#4CAF50]/50" />
 
                     <Skeleton className="h-6 w-20 bg-[#4CAF50]/50" />
@@ -161,7 +159,7 @@ export default function Navigation() {
                       <DropdownMenuTrigger asChild>
                         <Button
                           variant="ghost"
-                          className="flex items-center gap-2 p-1 px-2 h-auto hover:bg-gray-100 rounded-full cursor-pointer"
+                          className="flex items-center h-auto hover:bg-gray-100 rounded-full cursor-pointer"
                         >
                           <Avatar>
                             <AvatarImage
@@ -185,7 +183,7 @@ export default function Navigation() {
 
                       <DropdownMenuContent
                         align="end"
-                        className="w-35 rounded-b-md mt-2 !shadow-xl "
+                        className="w-35 rounded-b-md mt-1 mr-3 !shadow-xl "
                       >
                         <DropdownMenuLabel>My Account</DropdownMenuLabel>
                         <DropdownMenuSeparator />
@@ -223,7 +221,7 @@ export default function Navigation() {
                     </DropdownMenu>
                   </>
                 )}
-              </div>
+              </>
             )}
 
             <Sheet>
