@@ -36,6 +36,7 @@ export default function SignUpPage() {
           console.log(res);
         }
         toast("Verification email has been sent", {
+          duration: 10000,
           type: "success",
           description:
             "Check your email inbox or spam folder and click on the link to verify your email",
