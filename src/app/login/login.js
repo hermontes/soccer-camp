@@ -19,7 +19,7 @@ export default function LogInPage() {
   const [invalidLogin, setInvalidLogin] = useState(false);
   const [showPass, setShowPass] = useState(false);
 
-  const { refetch} = useSession()
+  const { refetch } = useSession();
 
   const {
     register,
@@ -41,7 +41,7 @@ export default function LogInPage() {
           console.log("success: ", response);
           //refetch the current session so other session with this tab can get the current session
           // later: move this logic in one session fetch that gets used throughout the app using useContext
-          refetch() 
+          refetch();
           toast("Successfully signed in.", {
             duration: 2000,
             // icon: <Check className="w-4 h-4 text-[#4CAF50]"/>,
@@ -62,9 +62,25 @@ export default function LogInPage() {
                 color: "black",
               },
             });
+            console.log("In Email not verified block", response.message);
+          } else {
+            console.log(
+              "In else statement of Email not verified block",
+              response.message
+            );
+            console.log(
+              "This must mean there's no account with this login attempt"
+            );
+            toast("No account with that email address", {
+              type: "error",
+              description:
+                "Click sign up to create an account please",
+              style: {
+                color: "black",
+              },
+            });
           }
-          console.log("new account?: ", response.message);
-          console.log("create a new account buyyooo");
+
           setInvalidLogin(true);
         }
         // reset();
