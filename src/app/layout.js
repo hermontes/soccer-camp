@@ -7,6 +7,7 @@ import Navigation from "@/components/navigation/Navigation";
 import { auth } from "@/lib/auth";
 import { Toaster } from "@/components/ui/sonner";
 
+import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata = {
   title: "Summer Camp",
@@ -14,18 +15,20 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }) {
-
   // const session = await auth.api.getSession({
   //   headers: await headers(),
   // });
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className="bg-[#F9FAFB]">
-        <Navigation ></Navigation>
-        {/* <Navbar1></Navbar1> */}
-        {children}
-        <Toaster theme="light"/>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem
+          disableTransitionOnChange>
+          <Navigation></Navigation>
+          
+          {children}
+          <Toaster theme="light" />
+        </ThemeProvider>
       </body>
     </html>
   );
