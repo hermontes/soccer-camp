@@ -63,8 +63,9 @@ export default function DashboardClient({ user }) {
   return (
     <>
       <div className="flex min-h-screen flex-col">
-        <main className="flex flex-1 flex-col bg-muted/40">
+        <main className="flex flex-1 flex-col dark:bg-black">
           <div className="w-full mx-auto flex-1 space-y-4 p-8 pt-6">
+            
             <div className="flex-1 space-y-4">
               <div className="flex items-center justify-between px-2">
                 <div className="grid gap-1">
