@@ -71,18 +71,3 @@ model Verification {
 
   @@map("verification")
 }
-
-model Subscription {
-  id                   String    @id
-  plan                 String
-  referenceId          String
-  stripeCustomerId     String?
-  stripeSubscriptionId String?
-  status               String?
-  periodStart          DateTime?
-  periodEnd            DateTime?
-  cancelAtPeriodEnd    Boolean?
-  seats                Int?
-
-  @@map("subscription")
-}
