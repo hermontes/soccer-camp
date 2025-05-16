@@ -12,6 +12,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Clock, Users } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { createContext } from "react";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
+import Link from "next/link";
 export const NavContext = createContext(1);
 
 export default function DashboardClient({ user }) {
@@ -136,6 +139,14 @@ export default function DashboardClient({ user }) {
                           </span>
                         </div>
                       </div>
+
+                      <Button
+                        type="button"
+                        className="w-30 mt-5"
+                      >
+                       <Link href="/dashboard/stripe/">Make a payment</Link>
+
+                      </Button>
                     </CardContent>
                   </Card>
 
