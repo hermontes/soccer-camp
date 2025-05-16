@@ -3,12 +3,12 @@
 import { betterAuth } from "better-auth";
 import { nextCookies } from "better-auth/next-js";
 import { prismaAdapter } from "better-auth/adapters/prisma";
-
+import { stripe } from "@better-auth/stripe";
+import Stripe from "stripe";
 // import { Pool } from "pg";
 import { PrismaClient } from "../../generated/prisma";
-import { sendEmail } from "@/app/utils/authentication/mail";
+import { sendEmail } from "../app/utils/authentication/mail";
 const prisma = new PrismaClient();
-
 
 export const auth = betterAuth({
   baseURL: process.env.BETTER_AUTH_URL,
@@ -16,11 +16,11 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
     autoSignIn: true,
-    requireEmailVerification: true
+    requireEmailVerification: true,
   },
   emailVerification: {
     sendVerificationEmail: async ({ user, url, token }, request) => {
-      const verificationURL = `${process.env.BETTER_AUTH_URL}/api/auth/verify-email?token=${token}&callbackURL=${process.env.VERIFIED_EMAIL_REDIRECT}`
+      const verificationURL = `${process.env.BETTER_AUTH_URL}/api/auth/verify-email?token=${token}&callbackURL=${process.env.VERIFIED_EMAIL_REDIRECT}`;
       await sendEmail({
         to: user.email,
         subject: "Verify your email address",
@@ -29,22 +29,51 @@ export const auth = betterAuth({
     },
     sendOnSignUp: true, //send verification email on sign up
     autoSignInAfterVerification: true,
-    expiresIn: 900 //verification token valid for 30 minutes
-
+    expiresIn: 900, //verification token valid for 30 minutes
   },
-  // database: new Pool({
-  //   user: process.env.POSTGRES_DATABASE_USER,
-  //   host: "localhost",
-  //   database: process.env.POSTGRES_DATABASE_NAME,
-  //   password: process.env.POSTGRES_PASSWORD,
-  //   port: 5432,
-  //   max: 20,
-  //   idleTimeoutMillis: 30000,
-  // }),
   database: prismaAdapter(prisma, {
     provider: "postgresql",
   }),
-  plugins: [nextCookies()], //enables cookies for server calls
+  plugins: [
+    nextCookies(),
+    stripe({
+      stripeClient: new Stripe(process.env.STRIPE_SECRET_KEY), //enables cookies for server calls
+      stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET,
+      onEvent: async (event) => {
+        // Handle any Stripe event
+        if (event.type === "checkout.session.completed") {
+          const session = event.data.object;
+          //at this point call the check out success function
+          //associate this with a custoemr from my DB
+          console.log("got back customer ID: : ", session.customer);
+          await prisma.user.updateMany({
+            where: { stripeCustomerId: session.customer},
+            data: { paid: true },
+          });
+
+          console.log("CHECKOUT SESSSSSSION", session);
+          // Inspect session.payment_status or session.payment_intent
+          // Update your database here
+        }
+      },
+      createCustomerOnSignUp: true,
+      // subscription: {
+      //   enabled: true,
+      //   plans: [
+      //     {
+      //       name: "starter",
+      //       priceId: process.env.STARTER_PRICE_ID,
+      //       successUrl: "/dashboard",
+      //       cancelUrl: "/pricing",
+      //       // annualDiscountPriceId: STARTER_PRICE_ID.annual, //optional
+      //       // freeTrial: {
+      //       // 	days: 7,
+      //       // },
+      //     },
+      //   ],
+      // },
+    }),
+  ],
   //When cookie caching is enabled, the server can check session validity from the cookie itself instead of hitting the database each time.
   session: {
     cookieCache: {
