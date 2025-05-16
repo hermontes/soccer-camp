@@ -13,7 +13,7 @@ export async function POST() {
   });
 
   if(!session || !session.user.stripeCustomerId) {
-    return NextResponse.json({ error: 'Not authenticated' }, { status: 401 })};
+    return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
   }
 
   try {
