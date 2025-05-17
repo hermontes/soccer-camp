@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-import { Clock, Users } from "lucide-react";
+import { Clock, Users, BadgeCheck, CreditCard, Lock } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { createContext } from "react";
 import { Button } from "@/components/ui/button";
@@ -126,7 +126,12 @@ export default function DashboardClient({ user }) {
                                 Not Verified
                               </Badge>
                             ) : (
-                              <Badge className="bg-[#4CAF50]">Verified</Badge>
+                              <span className="flex">
+                                <Badge className="bg-[#4CAF50]">
+                                  <BadgeCheck />
+                                  Verified
+                                </Badge>
+                              </span>
                             )}
                           </span>
                         </div>
@@ -140,13 +145,9 @@ export default function DashboardClient({ user }) {
                         </div>
                       </div>
 
-                      <Button
-                        type="button"
-                        className="w-30 mt-5"
-                      >
-                       <Link href="/dashboard/stripe/">Make a payment</Link>
-
-                      </Button>
+                      {/* <Button type="button" className="w-30 mt-5">
+                        <Link href="/dashboard/stripe/">Make a payment</Link>
+                      </Button> */}
                     </CardContent>
                   </Card>
 
@@ -222,6 +223,66 @@ export default function DashboardClient({ user }) {
                     </CardContent>
                   </Card>
                 </div>
+              </div>
+              <div className="max-w-3xl mx-auto">
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-center space-y-0 pb-2 border-b-2">
+                    <CardTitle className="text-2xl font-medium">
+                      Pay for the 2025 summer Session
+                    </CardTitle>
+                  </CardHeader>
+                  <div className="grid md:grid-cols-2   gap-6">
+                    <CardContent className="">
+                      <div className="text-2xl font-bold">Hawker B</div>
+                      <p className="text-xs text-muted-foreground">
+                        Age Group: 10-12 years
+                      </p>
+                      <div className="mt-4 space-y-2">
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-muted-foreground">Coach:</span>
+                          <span className="font-medium">Michael Johnson</span>
+                        </div>
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-muted-foreground">
+                            Team Size:
+                          </span>
+                          <span className="font-medium">12 players</span>
+                        </div>
+                      </div>
+                    </CardContent>
+                    <CardContent>
+                      <div className="flex flex-col">
+                        <div className="space-y-2 bg-muted/50 p-3 rounded-xs">
+                          <div className="flex items-center justify-between text-md">
+                            <div className="">Camp Fee:</div>
+                            <div className="font-medium">$100.0</div>
+                          </div>
+                          <div className="flex items-center justify-between text-sm border-b-2 text-muted-foreground">
+                            <span className="">Equipment Fee</span>
+                            <span className="">$20.00</span>
+                          </div>
+                          <div className="flex items-center justify-between text-lg font-bold">
+                            <span className="">Total:</span>
+                            <span className="font-medium">$220.0</span>
+                          </div>
+                        </div>
+                        <form action="/api/checkout_sessions/" method="POST">
+                          <Button
+                            type="submit "
+                            className="w-full mt-4 bg-[#4CAF50] hover:bg-[#3e8e41] cursor-grab"
+                          >
+                            {" "}
+                            <CreditCard />
+                            Pay Now
+                          </Button>
+                        </form>
+                        <div className="flex text-muted-foreground mx-auto text-sm pt-3 items-center gap-1">
+                        <Lock className="w-4 h-4 text-sm"/><p>Secured payment with Stripe</p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </div>
+                </Card>
               </div>
               {/* <div className="flex w-full flex-col items-center p-[10rem]">
         <div className="">Current session user name: {user.name}</div>
