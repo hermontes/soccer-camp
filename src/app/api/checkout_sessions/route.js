@@ -31,7 +31,7 @@ export async function POST() {
       ],
       mode: "payment",
       success_url: `${origin}/dashboard/stripe/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${origin}/dashboard/stripe?canceled=true`,
+      cancel_url: `${origin}/dashboard/?canceled=true`,
       // automatic_tax: { enabled: true },
       
     });
