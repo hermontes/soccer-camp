@@ -81,14 +81,14 @@ export default function DashboardClient({ user }) {
                 </div>
               </div>
               <div className="grid gap-6">
-                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                   <Card className="rounded-lg border bg-card text-card-foreground shadow-sm">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                       <CardTitle className="text-sm font-medium">
                         Registration Status
                       </CardTitle>
                       <Badge
-                        variant={user ? "default" : "outline"}
+                        // variant={user ? "default" : "outline"}
                         className="bg-[#4CAF50]"
                       >
                         Confirmed
@@ -150,7 +150,7 @@ export default function DashboardClient({ user }) {
                     </CardContent>
                   </Card>
 
-                  <Card>
+                  {/* <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                       <CardTitle className="text-sm font-medium">
                         Camp Countdown
@@ -171,7 +171,7 @@ export default function DashboardClient({ user }) {
                         <span className="font-medium">July 8, 2025</span>
                       </div>
                     </CardContent>
-                  </Card>
+                  </Card> */}
                   <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                       <CardTitle className="text-sm font-medium">
