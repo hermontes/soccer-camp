@@ -13,7 +13,7 @@ export async function middleware(request) {
 }
 
 export const config = {
-  matcher: ["/blog", "/dashboard"], // Specify the routes the middleware applies to
+  matcher: ["/blog", "/dashboard/:path*"], // Specify the routes the middleware applies to
 };
 // For later: The getSessionCookie() function does not automatically reference the auth config specified in auth.ts. Therefore, you need to ensure that the configuration in getSessionCookie() matches the config defined in your auth.ts.
 
