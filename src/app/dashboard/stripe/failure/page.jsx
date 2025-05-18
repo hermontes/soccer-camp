@@ -1,18 +1,14 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { AlertCircle, RefreshCw, MessageCircle, ArrowLeft } from "lucide-react";
-import Link from "next/link";
 
+import { Card, CardContent } from "@/components/ui/card";
+import { AlertCircle } from "lucide-react";
+import BackButton from "@/components/ui/back-button";
 export default function PaymentIncomplete({ error }) {
   //have to fix this later
   return (
     <div className="container mx-auto py-12 px-4 max-w-md">
       <Card className="border-red-100">
-        <Link href="/dashboard" className="pl-4 text-sm">
-          <ArrowLeft />
-        </Link>
-
+        <BackButton link={"/dashboard"}/>
         <CardContent className="pt-6 text-center">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-red-100 mb-4">
             <AlertCircle className="h-8 w-8 text-red-600" />
