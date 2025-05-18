@@ -9,9 +9,13 @@ import {
 } from "@/components/forms/form-validation";
 import Link from "next/link";
 import { toast } from "sonner";
+import { EyeOff, Eye } from "lucide-react";
+import { useState } from "react";
 
 export default function SignUpPage() {
   const router = useRouter();
+  const [showPass, setShowPass] = useState(false);
+  const [showConfirmPass, setShowConfirmPass] = useState(false);
 
   const {
     register,
@@ -144,7 +148,7 @@ export default function SignUpPage() {
                   Password
                 </label>
               </div>
-              <div className="mt-2">
+              <div className="mt-2 relative">
                 <input
                   {...register("password", {
                     required: "Please enter a password",
@@ -178,10 +182,23 @@ export default function SignUpPage() {
                   })}
                   id="password"
                   name="password"
-                  type="password"
+                  type={showPass ? "text" : "password"}
                   autoComplete="current-password"
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                 />
+                <button
+                  type="button"
+                  className="absolute bg-white pt-1.5 pb-1.5 px-0.5 cursor-pointer top-1 right-1 outline-none"
+                  onClick={() => setShowPass((prev) => !prev)}
+                >
+                  <div className="hover:bg-gray-50 px-1 rounded-full">
+                    {showPass ? (
+                      <EyeOff className="h-4 w-4" aria-hidden="true" />
+                    ) : (
+                      <Eye className="h-4 w-4" aria-hidden="true" />
+                    )}
+                  </div>
+                </button>
                 {errors.password && (
                   <DisplayErrorMessage
                     message={errors.password.message}
@@ -198,7 +215,7 @@ export default function SignUpPage() {
                   Confirm Password
                 </label>
               </div>
-              <div className="mt-2">
+              <div className="mt-2 relative">
                 <input
                   {...register("confirmPassword", {
                     required: "Confirm your password",
@@ -211,10 +228,23 @@ export default function SignUpPage() {
                   })}
                   id="confirmPassword"
                   name="confirmPassword"
-                  type="password"
+                  type={showConfirmPass ? "text" : "password"}
                   autoComplete="current-password"
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                 />
+                <button
+                  type="button"
+                  className="absolute bg-white pt-1.5 pb-1.5 px-0.5 cursor-pointer top-1 right-1 outline-none"
+                  onClick={() => setShowConfirmPass((prev) => !prev)}
+                >
+                  <div className="hover:bg-gray-50 px-1 rounded-full">
+                    {showConfirmPass ? (
+                      <EyeOff className="h-4 w-4" aria-hidden="true" />
+                    ) : (
+                      <Eye className="h-4 w-4" aria-hidden="true" />
+                    )}
+                  </div>
+                </button>
                 {errors.confirmPassword && (
                   <>
                     <DisplayErrorMessage
