@@ -34,6 +34,14 @@ export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: "postgresql",
   }),
+  user: {
+    additionalFields: {
+      paid:{
+        type: Boolean,
+        nullable: false
+      }
+    }
+  },
   plugins: [
     nextCookies(),
     stripe({
