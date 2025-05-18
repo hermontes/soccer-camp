@@ -1,5 +1,4 @@
 "use client";
-import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { AlertCircle, RefreshCw, MessageCircle, ArrowLeft } from "lucide-react";
@@ -12,7 +11,6 @@ export default function PaymentIncomplete({ error }) {
       <Card className="border-red-100">
         <Link href="/dashboard" className="pl-4 text-sm">
           <ArrowLeft />
-          
         </Link>
 
         <CardContent className="pt-6 text-center">
@@ -29,10 +27,10 @@ export default function PaymentIncomplete({ error }) {
           <div className="bg-gray-50 p-4 rounded-lg text-left mb-6">
             <h3 className="font-medium text-sm mb-2">Possible reasons:</h3>
             <ul className="text-sm text-gray-600 space-y-1 list-disc list-inside">
+              <li>Temporary connection issue</li>
               <li>Insufficient funds</li>
               <li>Incorrect card information</li>
               <li>Card expired or declined</li>
-              <li>Temporary connection issue</li>
             </ul>
           </div>
         </CardContent>
