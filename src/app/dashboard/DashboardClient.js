@@ -85,13 +85,14 @@ export default function DashboardClient({ user }) {
                   <Card className="rounded-lg border bg-card text-card-foreground shadow-sm">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                       <CardTitle className="text-sm font-medium">
-                        Registration Status
+                        Registration Payment
                       </CardTitle>
                       <Badge
                         // variant={user ? "default" : "outline"}
-                        className="bg-[#4CAF50]"
+                        className={user.paid ? "bg-[#4CAF50]" : "bg-red-400"}
+                        // "bg-[#4CAF50]"
                       >
-                        Confirmed
+                        {user.paid ? "Paid" : "Missing"}
                       </Badge>
                     </CardHeader>
                     <CardContent>
