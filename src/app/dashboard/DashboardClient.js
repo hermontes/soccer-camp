@@ -83,23 +83,13 @@ export default function DashboardClient({ user }) {
               <div className="grid gap-6">
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                   <Card className="rounded-lg border bg-card text-card-foreground shadow-sm">
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                      <CardTitle className="text-sm font-medium">
-                        Registration Payment
-                      </CardTitle>
-                      <Badge
-                        // variant={user ? "default" : "outline"}
-                        className={user.paid ? "bg-[#4CAF50]" : "bg-red-400"}
-                        // "bg-[#4CAF50]"
-                      >
-                        {user.paid ? "Paid" : "Missing"}
-                      </Badge>
-                    </CardHeader>
+                    {/* <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                      
+                    </CardHeader> */}
                     <CardContent>
-                      <div className="flex items-center space-x-4">
+                      <div className="flex items-center space-x-4 pt-3">
                         <Avatar>
                           <AvatarImage
-                            className=""
                             src={user.image}
                             alt={user.name}
                           />
@@ -136,6 +126,26 @@ export default function DashboardClient({ user }) {
                             )}
                           </span>
                         </div>
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-muted-foreground">
+                          Registration Payment:
+                          </span>
+                          <span className="font-medium">
+                            {user.paid === false ? (
+                              <Badge className="bg-amber-700">
+                                Missing
+                              </Badge>
+                            ) : (
+                              <span className="flex">
+                                <Badge className="bg-[#4CAF50]">
+                                  
+                                  Received
+                                </Badge>
+                              </span>
+                            )}
+                          </span>
+                        </div>
+                        
                         <div className="flex items-center justify-between text-sm">
                           <span className="text-muted-foreground">
                             Registration ID:
