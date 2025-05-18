@@ -1,6 +1,8 @@
 //This tell Better-Auth how to behave and what is allowed once the requests are made to route.js
 //defines authentication rules and settings
 import { betterAuth } from "better-auth";
+import { admin } from "better-auth/plugins";
+
 import { nextCookies } from "better-auth/next-js";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { stripe } from "@better-auth/stripe";
@@ -36,13 +38,14 @@ export const auth = betterAuth({
   }),
   user: {
     additionalFields: {
-      paid:{
+      paid: {
         type: Boolean,
-        nullable: false
-      }
-    }
+        nullable: false,
+      },
+    },
   },
   plugins: [
+    admin(),
     nextCookies(),
     stripe({
       stripeClient: new Stripe(process.env.STRIPE_SECRET_KEY), //enables cookies for server calls
@@ -55,7 +58,7 @@ export const auth = betterAuth({
           //associate this with a custoemr from my DB
           console.log("got back customer ID: : ", session.customer);
           await prisma.user.updateMany({
-            where: { stripeCustomerId: session.customer},
+            where: { stripeCustomerId: session.customer },
             data: { paid: true },
           });
 
