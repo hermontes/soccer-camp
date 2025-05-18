@@ -89,10 +89,7 @@ export default function DashboardClient({ user }) {
                     <CardContent>
                       <div className="flex items-center space-x-4 pt-3">
                         <Avatar>
-                          <AvatarImage
-                            src={user.image}
-                            alt={user.name}
-                          />
+                          <AvatarImage src={user.image} alt={user.name} />
                           <AvatarFallback className="bg-muted">
                             {user.name.charAt(0)}
                           </AvatarFallback>
@@ -128,24 +125,19 @@ export default function DashboardClient({ user }) {
                         </div>
                         <div className="flex items-center justify-between text-sm">
                           <span className="text-muted-foreground">
-                          Registration Payment:
+                            Registration Payment:
                           </span>
                           <span className="font-medium">
                             {user.paid === false ? (
-                              <Badge className="bg-amber-700">
-                                Missing
-                              </Badge>
+                              <Badge className="bg-amber-700">Missing</Badge>
                             ) : (
                               <span className="flex">
-                                <Badge className="bg-[#4CAF50]">
-                                  
-                                  Received
-                                </Badge>
+                                <Badge className="bg-[#4CAF50]">Received</Badge>
                               </span>
                             )}
                           </span>
                         </div>
-                        
+
                         <div className="flex items-center justify-between text-sm">
                           <span className="text-muted-foreground">
                             Registration ID:
@@ -155,35 +147,9 @@ export default function DashboardClient({ user }) {
                           </span>
                         </div>
                       </div>
-
-                      {/* <Button type="button" className="w-30 mt-5">
-                        <Link href="/dashboard/stripe/">Make a payment</Link>
-                      </Button> */}
                     </CardContent>
                   </Card>
 
-                  {/* <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                      <CardTitle className="text-sm font-medium">
-                        Camp Countdown
-                      </CardTitle>
-                      <Clock className="h-4 w-4 text-muted-foreground" />
-                    </CardHeader>
-                    <CardContent>
-                      <div className="text-2xl font-bold">45 days</div>
-                      <p className="text-xs text-muted-foreground">
-                        Days until camp starts
-                      </p>
-                      <Progress
-                        value={((100 - 45) * 90) / 100}
-                        className="mt-3"
-                      />
-                      <div className="mt-2 text-xs text-muted-foreground">
-                        Camp starts on{" "}
-                        <span className="font-medium">July 8, 2025</span>
-                      </div>
-                    </CardContent>
-                  </Card> */}
                   <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                       <CardTitle className="text-sm font-medium">
@@ -235,66 +201,72 @@ export default function DashboardClient({ user }) {
                   </Card>
                 </div>
               </div>
-              <div className="max-w-3xl mx-auto">
-                <Card>
-                  <CardHeader className="flex flex-row items-center justify-center space-y-0 pb-2 border-b-2">
-                    <CardTitle className="text-2xl font-medium">
-                      Pay for the 2025 summer Session
-                    </CardTitle>
-                  </CardHeader>
-                  <div className="grid md:grid-cols-2   gap-6">
-                    <CardContent className="">
-                      <div className="text-2xl font-bold">Hawker B</div>
-                      <p className="text-xs text-muted-foreground">
-                        Age Group: 10-12 years
-                      </p>
-                      <div className="mt-4 space-y-2">
-                        <div className="flex items-center justify-between text-sm">
-                          <span className="text-muted-foreground">Coach:</span>
-                          <span className="font-medium">Michael Johnson</span>
-                        </div>
-                        <div className="flex items-center justify-between text-sm">
-                          <span className="text-muted-foreground">
-                            Team Size:
-                          </span>
-                          <span className="font-medium">12 players</span>
-                        </div>
-                      </div>
-                    </CardContent>
-                    <CardContent>
-                      <div className="flex flex-col">
-                        <div className="space-y-2 bg-muted/50 p-3 rounded-xs">
-                          <div className="flex items-center justify-between text-md">
-                            <div className="">Camp Fee:</div>
-                            <div className="font-medium">$100.0</div>
+              {user.paid === false && (
+                <div className="max-w-3xl mx-auto">
+                  <Card>
+                    <CardHeader className="flex flex-row items-center justify-center space-y-0 pb-2 border-b-2">
+                      <CardTitle className="text-2xl font-medium">
+                        Pay for the 2025 summer Session
+                      </CardTitle>
+                    </CardHeader>
+                    <div className="grid md:grid-cols-2   gap-6">
+                      <CardContent className="">
+                        <div className="text-2xl font-bold">Hawker B</div>
+                        <p className="text-xs text-muted-foreground">
+                          Age Group: 10-12 years
+                        </p>
+                        <div className="mt-4 space-y-2">
+                          <div className="flex items-center justify-between text-sm">
+                            <span className="text-muted-foreground">
+                              Coach:
+                            </span>
+                            <span className="font-medium">Michael Johnson</span>
                           </div>
-                          <div className="flex items-center justify-between text-sm border-b-2 text-muted-foreground">
-                            <span className="">Equipment Fee</span>
-                            <span className="">$20.00</span>
-                          </div>
-                          <div className="flex items-center justify-between text-lg font-bold">
-                            <span className="">Total:</span>
-                            <span className="font-medium">$220.0</span>
+                          <div className="flex items-center justify-between text-sm">
+                            <span className="text-muted-foreground">
+                              Team Size:
+                            </span>
+                            <span className="font-medium">12 players</span>
                           </div>
                         </div>
-                        <form action="/api/checkout_sessions/" method="POST">
-                          <Button
-                            type="submit "
-                            className="w-full mt-4 bg-[#4CAF50] hover:bg-[#3e8e41] cursor-grab"
-                          >
-                            {" "}
-                            <CreditCard />
-                            Pay Now
-                          </Button>
-                        </form>
-                        <div className="flex text-muted-foreground mx-auto text-sm pt-3 items-center gap-1">
-                        <Lock className="w-4 h-4 text-sm"/><p>Secured payment with Stripe</p>
+                      </CardContent>
+                      <CardContent>
+                        <div className="flex flex-col">
+                          <div className="space-y-2 bg-muted/50 p-3 rounded-xs">
+                            <div className="flex items-center justify-between text-md">
+                              <div className="">Camp Fee:</div>
+                              <div className="font-medium">$100.0</div>
+                            </div>
+                            <div className="flex items-center justify-between text-sm border-b-2 text-muted-foreground">
+                              <span className="">Equipment Fee</span>
+                              <span className="">$20.00</span>
+                            </div>
+                            <div className="flex items-center justify-between text-lg font-bold">
+                              <span className="">Total:</span>
+                              <span className="font-medium">$220.0</span>
+                            </div>
+                          </div>
+                          <form action="/api/checkout_sessions/" method="POST">
+                            <Button
+                              type="submit "
+                              className="w-full mt-4 bg-[#4CAF50] hover:bg-[#3e8e41] cursor-grab"
+                            >
+                              {" "}
+                              <CreditCard />
+                              Pay Now
+                            </Button>
+                          </form>
+                          <div className="flex text-muted-foreground mx-auto text-sm pt-3 items-center gap-1">
+                            <Lock className="w-4 h-4 text-sm" />
+                            <p>Secured payment with Stripe</p>
+                          </div>
                         </div>
-                      </div>
-                    </CardContent>
-                  </div>
-                </Card>
-              </div>
+                      </CardContent>
+                    </div>
+                  </Card>
+                </div>
+              )}
+
               {/* <div className="flex w-full flex-col items-center p-[10rem]">
         <div className="">Current session user name: {user.name}</div>
         <div>Current session user email: {user.email}</div>

@@ -57,12 +57,11 @@ export default function LogInPage() {
         toast("Unable to sign in", {
           duration: 7000,
           type: "error",
-          position: 'bottom-center',
+          position: "bottom-center",
           description: "Please check your credentials or verify your email",
         });
         setInvalidLogin(true);
       }
-
 
       // Handle specific error cases, not working on prod at the moment
       // if (response.message === "Email not verified") {
@@ -78,7 +77,6 @@ export default function LogInPage() {
       //     description: "Click sign up to create an account please",
       //   });
       // }
-     
     } catch (error) {
       // Handle unexpected errors
       console.error("Login failed:", error);

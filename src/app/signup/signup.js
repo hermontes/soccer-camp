@@ -6,7 +6,7 @@ import { signUpUser } from "@/app/utils/authentication/users-auth-validation";
 import {
   SubmitButton,
   DisplayErrorMessage,
-} from "@/components/forms/form-validation";
+} from "@/components/forms/form-validation";s
 import Link from "next/link";
 import { toast } from "sonner";
 import { EyeOff, Eye } from "lucide-react";
