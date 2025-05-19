@@ -10,9 +10,9 @@ A web application for managing soccer camp registrations and activities, with fo
 - **Tailwind CSS 4** 
 
 ### Authentication, Database & Payment
-- **Better Auth** - Authentication library for handling user sessions
 - **PostgreSQL** - Relational database for storing users info and sessions
-- **Stripe** - Easy way to make payments
+- **Stripe** - Secure payments
+- **Better Auth** - Authentication library for handling user sessions
 
 ### Development Tools
 - **TurboPack** - bundler and build system
