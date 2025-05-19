@@ -12,7 +12,7 @@ A web application for managing soccer camp registrations and activities, with fo
 ### Authentication, Database & Payment
 - **Better Auth** - Authentication library for handling user sessions
 - **PostgreSQL** - Relational database for storing users info and sessions
-- **Stripe** - Easy way to make payments [in-progress]
+- **Stripe** - Easy way to make payments
 
 ### Development Tools
 - **TurboPack** - bundler and build system
