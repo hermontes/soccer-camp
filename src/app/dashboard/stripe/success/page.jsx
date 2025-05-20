@@ -4,14 +4,17 @@ import {
   Card,
   CardContent,
   CardHeader,
-  CardTitle,
   CardFooter,
 } from "@/components/ui/card";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { stripe } from "@/lib/stripe";
-import { toast } from "sonner";
-import PaymentIncomplete from "../failure/page";
+
+export const metadata = {
+  title: "Payment Successful - Summer Camp",
+  description: "Your Summer Soccer Camp registration payment was successful.",
+};
+
 export default async function Success({ searchParams }) {
   const { session_id } = await searchParams;
 

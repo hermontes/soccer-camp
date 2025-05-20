@@ -3,6 +3,12 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { AlertCircle } from "lucide-react";
 import BackButton from "@/components/ui/back-button";
+
+export const metadata = {
+  title: "Payment Failed - Summer Camp",
+  description: "Your Summer Soccer Camp registration payment could not be processed.",
+};
+
 export default function PaymentIncomplete({ error }) {
   //have to fix this later
   return (
