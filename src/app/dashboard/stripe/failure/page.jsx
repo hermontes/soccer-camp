@@ -4,17 +4,12 @@ import { Card, CardContent } from "@/components/ui/card";
 import { AlertCircle } from "lucide-react";
 import BackButton from "@/components/ui/back-button";
 
-export const metadata = {
-  title: "Payment Failed - Summer Camp",
-  description: "Your Summer Soccer Camp registration payment could not be processed.",
-};
-
 export default function PaymentIncomplete({ error }) {
   //have to fix this later
   return (
     <div className="container mx-auto py-12 px-4 max-w-md">
       <Card className="border-red-100">
-        <BackButton link={"/dashboard"}/>
+        <BackButton link={"/dashboard"} />
         <CardContent className="pt-6 text-center">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-red-100 mb-4">
             <AlertCircle className="h-8 w-8 text-red-600" />
