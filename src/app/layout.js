@@ -1,6 +1,5 @@
 import "./globals.css";
-
-import Navigation from "@/components/navigation/Navigation";
+import NavigationLayout from "@/components/navigation/layout";
 import { Toaster } from "@/components/ui/sonner";
 
 export const metadata = {
@@ -9,14 +8,10 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }) {
-  // const session = await auth.api.getSession({
-  //   headers: await headers(),
-  // });
-
   return (
     <html lang="en">
       <body className="bg-[#F9FAFB]">
-        <Navigation></Navigation>
+        <NavigationLayout />
         {/* <Navbar1></Navbar1> */}
         {children}
         <Toaster theme="light" />

@@ -41,7 +41,6 @@ export default function LogInPage() {
 
       // Successful login with valid user
       if (response.user) {
-        refetch(); // Refresh session data
 
         toast("Successfully signed in.", {
           duration: 2000,
