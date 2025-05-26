@@ -9,13 +9,12 @@ import {
   SubmitButton,
   DisplayErrorMessage,
 } from "@/components/forms/form-validation";
+
 import { useState } from "react";
-import { Loader2, Eye, EyeOff, EyeClosed, Check } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Eye, EyeOff, Check } from "lucide-react";
 import { useSession } from "@/lib/auth-client";
 
 import { toast } from "sonner";
-import { APIError } from "better-auth/api";
 
 export default function LogInPage() {
   const [invalidLogin, setInvalidLogin] = useState(false);
