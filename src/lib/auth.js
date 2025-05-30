@@ -53,16 +53,22 @@ export const auth = betterAuth({
       onEvent: async (event) => {
         // Handle any Stripe event
         if (event.type === "checkout.session.completed") {
-          const session = event.data.object;
-          //at this point call the check out success function
-          //associate this with a custoemr from my DB
-          console.log("got back customer ID: : ", session.customer);
-          await prisma.user.updateMany({
-            where: { stripeCustomerId: session.customer },
-            data: { paid: true },
-          });
+          try {
+            const session = event.data.object;
+            //at this point call the check out success function
+            //associate this with a customer from my DB
+            console.log("got back customer ID: : ", session.customer);
+            await prisma.user.update({
+              where: { stripeCustomerId: session.customer },
+              data: { paid: true },
+            });
 
-          console.log("CHECKOUT SESSSSSSION", session);
+            console.log("CHECKOUT SESSSSSSION", session);
+          } catch (error) {
+
+
+          }
+
           // Inspect session.payment_status or session.payment_intent
           // Update your database here
         }
