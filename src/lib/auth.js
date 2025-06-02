@@ -63,7 +63,7 @@ export const auth = betterAuth({
               data: { paid: true },
             });
 
-            console.log("CHECKOUT SESSSSSSION", session);
+            // console.log("CHECKOUT SESSSSSSION", session);
           } catch (error) {
 
 
