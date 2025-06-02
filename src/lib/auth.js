@@ -65,8 +65,6 @@ export const auth = betterAuth({
 
             // console.log("CHECKOUT SESSSSSSION", session);
           } catch (error) {
-
-
           }
 
           // Inspect session.payment_status or session.payment_intent
