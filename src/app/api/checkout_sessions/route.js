@@ -16,6 +16,9 @@ export async function POST() {
     return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
   }
 
+  //to do: if a customer already paid, send them back
+  
+
   try {
     const headersList = await headers();
     const origin = headersList.get("origin");
