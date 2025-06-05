@@ -41,6 +41,8 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.56.2",
+    "redis": "^5.5.5",
+    "redis-cli": "^2.1.2",
     "sonner": "^2.0.3",
     "stripe": "^18.1.0",
     "stripe-cli": "^0.1.0",
