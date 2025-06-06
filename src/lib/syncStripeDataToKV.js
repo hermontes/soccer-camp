@@ -1,22 +1,27 @@
 import { getRedisClient } from "./redis";
 import { stripe } from "@/lib/stripe";
 
-// The contents of this function should probably be wrapped in a try/catch
-export async function syncStripeDataToKV(customerId) {
+export async function syncStripeDataToKV(stripeCustomerId) {
+  if (!stripeCustomerId) {
+    throw new Error("stripeCustomerId is required");
+  }
+
   try {
     const kv = await getRedisClient();
 
     // Fetch latest payment data from Stripe
     const payments = await stripe.paymentIntents.list({
-      customer: customerId,
+      customer: stripeCustomerId,
       limit: 1,
-      status: "all",
       expand: ["data.payment_method"],
     });
 
     if (payments.data.length === 0) {
       const paymentData = { status: "none" };
-      await kv.set(`stripe:customer:${customerId}`, paymentData);
+      await kv.set(
+        `stripe:customer:${stripeCustomerId}`,
+        JSON.stringify(paymentData)
+      );
       return paymentData;
     }
 
@@ -29,7 +34,7 @@ export async function syncStripeDataToKV(customerId) {
       status: paymentIntent.status,
       amount: paymentIntent.amount,
       currency: paymentIntent.currency,
-      paymentMethod: paymentIntent.payment_method,
+      paymentMethod: paymentIntent.payment_method?.type || "unknown",
       created: paymentIntent.created,
       receiptEmail: paymentIntent.receipt_email,
       description: paymentIntent.description,
