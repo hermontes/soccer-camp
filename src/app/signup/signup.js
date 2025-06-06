@@ -56,6 +56,16 @@ export default function SignUpPage() {
           //TODO: message: Sign in to this account or enter an email address that isn't already in use.
 
           console.log(error);
+          toast("Something went wrong while creating an account", {
+            duration: 10000,
+            type: "error",
+            description:
+              "Please check you don't have an existing account or try again",
+            style: {
+              color: "red",
+            },
+          });
+
         }
       });
   };
