@@ -41,11 +41,25 @@ export async function syncStripeDataToKV(stripeCustomerId) {
       metadata: paymentIntent.metadata,
     };
 
-    // Store the data in your KV
-    await kv.set(`stripe:customer:${customerId}`, paymentData);
-
+    if(paymentIntent.status === "succeeded") {
+      await prisma.user.update({
+        where: { stripeCustomerId: session.customer },
+        data: { paid: true },
+      });
+    }
+    
+    // Store the data in KV
+    await kv.set(
+      `stripe:customer:${stripeCustomerId}`,
+      JSON.stringify(paymentData)
+    );
     return paymentData;
   } catch (err) {
-    console.log("Error while trying to sync data", err);
+    console.error("Error syncing Stripe data to KV:", {
+      error: err.message,
+      stripeCustomerId,
+      timestamp: new Date().toISOString(),
+    });
+    throw err; // Re-throw to let caller handle the error
   }
 }
