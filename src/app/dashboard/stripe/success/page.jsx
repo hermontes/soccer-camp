@@ -41,8 +41,15 @@ export default async function Success({ searchParams }) {
     redirect("/dashboard/stripe/failure");
   }
 
+  // Use the customer ID from the checkout session
+  const customerId = checkoutSession.customer;
+  if (!customerId) {
+    console.error("No customer ID found in checkout session");
+    redirect("/dashboard/stripe/failure");
+  }
+
   // Only sync payment data after confirming checkout is complete
-  const data = await syncStripeDataToKV(session.user.stripeCustomerId);
+  const data = await syncStripeDataToKV(customerId);
   console.log("Payment data synced:", data);
 
   return (
