@@ -10,6 +10,9 @@ import Stripe from "stripe";
 // import { Pool } from "pg";
 import { PrismaClient } from "../../generated/prisma";
 import { sendEmail } from "../app/utils/authentication/mail";
+import { syncStripeDataToKV } from "./syncStripeDataToKV";
+import { allowedEvents } from "./stripeEvents";
+
 const prisma = new PrismaClient();
 
 export const auth = betterAuth({
@@ -20,6 +23,7 @@ export const auth = betterAuth({
     autoSignIn: true,
     requireEmailVerification: true,
   },
+
   emailVerification: {
     sendVerificationEmail: async ({ user, url, token }, request) => {
       const verificationURL = `${process.env.BETTER_AUTH_URL}/api/auth/verify-email?token=${token}&callbackURL=${process.env.VERIFIED_EMAIL_REDIRECT}`;
@@ -51,42 +55,19 @@ export const auth = betterAuth({
       stripeClient: new Stripe(process.env.STRIPE_SECRET_KEY), //enables cookies for server calls
       stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET,
       onEvent: async (event) => {
-        // Handle any Stripe event
-        if (event.type === "checkout.session.completed") {
+        // Handle pre-defined Stripe events
+        if (allowedEvents.includes(event.type)) {
           try {
             const session = event.data.object;
-            //at this point call the check out success function
-            //associate this with a customer from my DB
-            console.log("got back customer ID: : ", session.customer);
-            await prisma.user.update({
-              where: { stripeCustomerId: session.customer },
-              data: { paid: true },
-            });
+            // Sync payment data to KV using Stripe customer ID
+            await syncStripeDataToKV(session.customer);
 
-            // console.log("CHECKOUT SESSSSSSION", session);
           } catch (error) {
+            console.error("Error handling webhooks", error);
           }
-
-          // Inspect session.payment_status or session.payment_intent
-          // Update your database here
         }
       },
       createCustomerOnSignUp: true,
-      // subscription: {
-      //   enabled: true,
-      //   plans: [
-      //     {
-      //       name: "starter",
-      //       priceId: process.env.STARTER_PRICE_ID,
-      //       successUrl: "/dashboard",
-      //       cancelUrl: "/pricing",
-      //       // annualDiscountPriceId: STARTER_PRICE_ID.annual, //optional
-      //       // freeTrial: {
-      //       // 	days: 7,
-      //       // },
-      //     },
-      //   ],
-      // },
     }),
   ],
   //When cookie caching is enabled, the server can check session validity from the cookie itself instead of hitting the database each time.
