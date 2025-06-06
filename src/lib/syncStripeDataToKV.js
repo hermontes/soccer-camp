@@ -23,8 +23,24 @@ export async function syncStripeDataToKV(stripeCustomerId) {
     throw new Error("stripeCustomerId is required");
   }
 
-  // Ensure it's a string
-  const customerId = stripeCustomerId.toString();
+  // Handle different types of stripeCustomerId
+  let customerId;
+  if (typeof stripeCustomerId === "object") {
+    if (stripeCustomerId.id) {
+      customerId = stripeCustomerId.id;
+    } else if (stripeCustomerId.customer) {
+      customerId = stripeCustomerId.customer;
+    } else {
+      console.error(
+        "[syncStripeDataToKV] Invalid stripeCustomerId object:",
+        stripeCustomerId
+      );
+      throw new Error("Invalid stripeCustomerId object format");
+    }
+  } else {
+    customerId = stripeCustomerId.toString();
+  }
+
 
   try {
     const kv = await getRedisClient();
@@ -43,6 +59,7 @@ export async function syncStripeDataToKV(stripeCustomerId) {
         type: stripeError.type,
         code: stripeError.code,
         customerId,
+        originalInput: stripeCustomerId,
       });
       throw new Error(`Stripe API error: ${stripeError.message}`);
     }
@@ -128,6 +145,7 @@ export async function syncStripeDataToKV(stripeCustomerId) {
       code: err.code,
       stack: err.stack,
       customerId,
+      originalInput: stripeCustomerId,
       userId,
       timestamp: new Date().toISOString(),
     };
