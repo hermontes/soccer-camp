@@ -20,9 +20,12 @@ export async function POST() {
   try {
     const client = await getRedisClient();
 
-    await client.set(`stripe:user:${session.user.id}`, session.user.stripeCustomerId);
-    const result = await client.get(session.user.stripeCustomerId);
-    console.log("The result after fetching by the key:", result);
+    await client.set(
+      `stripe:user:${session.user.id}`,
+      session.user.stripeCustomerId
+    );
+    // const result = await client.get(`stripe:user:${session.user.id}`);
+    // console.log("The result after fetching by the key:", result);
   } catch (err) {
     console.error("Redis operation failed:", err);
     return NextResponse.json(
