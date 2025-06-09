@@ -47,10 +47,6 @@ export default function DashboardClient({ user }) {
     }
   };
 
-  // useEffect(() => {
-  //   refetch();
-  // }, []);
-
   const signUserOut = async () => {
     try {
       const w = await authClient.signOut();
