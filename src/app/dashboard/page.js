@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import DashboardClient from "./DashboardClient";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
+import { getPaymentDataFromRedis } from "@/lib/getPaymentDataFromRedis";
 
 export const metadata = {
   title: "Dashboard - Summer Camp",
@@ -14,9 +15,19 @@ export default async function Dashboard() {
   });
 
   if (session) {
-    return <DashboardClient user={session.user}></DashboardClient>;
+    // Fetch payment data from Redis
+    const paymentData = await getPaymentDataFromRedis(
+      session.user.stripeCustomerId
+    );
+
+    return (
+      <DashboardClient
+        user={session.user}
+        paymentData={paymentData}
+      ></DashboardClient>
+    );
   } else {
     console.log("There is no session");
-    throw redirect("/login")
+    throw redirect("/login");
   }
 }
