@@ -606,7 +606,7 @@ export default function DashboardClient({ user, paymentData }) {
                       </CardContent>
                     </Card>
 
-                    <Card>
+                    {/* <Card>
                       <CardHeader>
                         <CardTitle className="text-lg">
                           Account Actions
@@ -621,7 +621,7 @@ export default function DashboardClient({ user, paymentData }) {
                           Sign Out
                         </Button>
                       </CardContent>
-                    </Card>
+                    </Card> */}
                   </TabsContent>
                 </Tabs>
               </div>
