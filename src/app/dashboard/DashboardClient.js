@@ -17,9 +17,10 @@ import { toast } from "sonner";
 import Link from "next/link";
 export const NavContext = createContext(1);
 
-export default function DashboardClient({ user }) {
+export default function DashboardClient({ user, paymentData }) {
   const [newName, setNewName] = useState("");
   const [newImage, setNewImage] = useState("");
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const router = useRouter();
 
@@ -56,6 +57,18 @@ export default function DashboardClient({ user }) {
       router.refresh(); //I have to refresh so my middleware can catch and check if there's a session and re-route to signup page
     } catch (err) {
       console.log("Error revoking sessions", err);
+    }
+  };
+
+  const refreshPaymentStatus = async () => {
+    setIsRefreshing(true);
+    try {
+      // Refresh the page to get updated payment data from Redis
+      router.refresh();
+    } catch (error) {
+      console.error("Error refreshing payment status:", error);
+    } finally {
+      setIsRefreshing(false);
     }
   };
 
@@ -124,7 +137,25 @@ export default function DashboardClient({ user }) {
                             Registration Payment:
                           </span>
                           <span className="font-medium">
-                            {user.paid === false ? (
+                            {paymentData?.status === "succeeded" ? (
+                              <span className="flex">
+                                <Badge className="bg-[#4CAF50]">
+                                  <BadgeCheck />
+                                  Paid
+                                </Badge>
+                              </span>
+                            ) : paymentData?.status === "processing" ? (
+                              <Badge className="bg-blue-600">Processing</Badge>
+                            ) : paymentData?.status ===
+                              "requires_payment_method" ? (
+                              <Badge className="bg-amber-700">
+                                Payment Required
+                              </Badge>
+                            ) : paymentData?.status === "canceled" ? (
+                              <Badge className="bg-red-600">Canceled</Badge>
+                            ) : paymentData?.status === "error" ? (
+                              <Badge className="bg-red-600">Error</Badge>
+                            ) : user.paid === false ? (
                               <Badge className="bg-amber-700">Missing</Badge>
                             ) : (
                               <span className="flex">
@@ -133,6 +164,59 @@ export default function DashboardClient({ user }) {
                             )}
                           </span>
                         </div>
+
+                        {/* Display payment details if available */}
+                        {paymentData &&
+                          paymentData.status !== "none" &&
+                          paymentData.status !== "error" && (
+                            <>
+                              {paymentData.amount && (
+                                <div className="flex items-center justify-between text-sm">
+                                  <span className="text-muted-foreground">
+                                    Amount Paid:
+                                  </span>
+                                  <span className="font-medium">
+                                    ${(paymentData.amount / 100).toFixed(2)}{" "}
+                                    {paymentData.currency?.toUpperCase()}
+                                  </span>
+                                </div>
+                              )}
+                              {paymentData.paymentMethod && (
+                                <div className="flex items-center justify-between text-sm">
+                                  <span className="text-muted-foreground">
+                                    Payment Method:
+                                  </span>
+                                  <span className="font-medium capitalize">
+                                    {paymentData.paymentMethod}
+                                  </span>
+                                </div>
+                              )}
+                              {paymentData.created && (
+                                <div className="flex items-center justify-between text-sm">
+                                  <span className="text-muted-foreground">
+                                    Payment Date:
+                                  </span>
+                                  <span className="font-medium">
+                                    {new Date(
+                                      paymentData.created * 1000
+                                    ).toLocaleDateString()}
+                                  </span>
+                                </div>
+                              )}
+                              {paymentData.lastUpdated && (
+                                <div className="flex items-center justify-between text-sm">
+                                  <span className="text-muted-foreground">
+                                    Last Updated:
+                                  </span>
+                                  <span className="font-medium">
+                                    {new Date(
+                                      paymentData.lastUpdated
+                                    ).toLocaleDateString()}
+                                  </span>
+                                </div>
+                              )}
+                            </>
+                          )}
 
                         <div className="flex items-center justify-between text-sm">
                           <span className="text-muted-foreground">
@@ -197,7 +281,7 @@ export default function DashboardClient({ user }) {
                   </Card>
                 </div>
               </div>
-              {user.paid === false && (
+              {user.paid === false && paymentData?.status !== "succeeded" && (
                 <div className="max-w-3xl mx-auto">
                   <Card>
                     <CardHeader className="flex flex-row items-center justify-center space-y-0 pb-2 border-b-2">
@@ -263,37 +347,171 @@ export default function DashboardClient({ user }) {
                 </div>
               )}
 
-              {/* <div className="flex w-full flex-col items-center p-[10rem]">
-        <div className="">Current session user name: {user.name}</div>
-        <div>Current session user email: {user.email}</div>
-        <div>Current session user ID: {user.id}</div>{" "}
-        <button
-          className="cursor-grab bg-cyan-500 p-[1rem]"
-          onClick={signUserOut}
-        >
-          Sign out
-        </button>
-        <DynamicComponent session={session}></DynamicComponent>
-        <input
-          type="name"
-          value={newName}
-          onChange={(e) => setNewName(e.target.value)}
-          placeholder="Set new name..."
-        />
-        <input
-          className="outline-none"
-          type="name"
-          value={newImage}
-          onChange={(e) => setNewImage(e.target.value)}
-          placeholder="Set new image..."
-        />
-        <button
-          className="cursor-grab bg-cyan-500 p-[1rem]"
-          onClick={updateUser}
-        >
-          Update User
-        </button>
-      </div> */}
+              {/* Payment Processing Status */}
+              {paymentData?.status === "processing" && (
+                <div className="max-w-3xl mx-auto">
+                  <Card>
+                    <CardHeader className="flex flex-row items-center justify-center space-y-0 pb-2 border-b-2">
+                      <CardTitle className="text-2xl font-medium text-blue-600">
+                        Payment Processing
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="text-center py-6">
+                      <div className="flex items-center justify-center mb-4">
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                      </div>
+                      <p className="text-lg font-medium mb-2">
+                        Your payment is being processed
+                      </p>
+                      <p className="text-muted-foreground">
+                        Please wait while we confirm your payment. This usually
+                        takes a few minutes.
+                      </p>
+                      {paymentData.lastUpdated && (
+                        <p className="text-sm text-muted-foreground mb-4">
+                          Last updated:{" "}
+                          {new Date(paymentData.lastUpdated).toLocaleString()}
+                        </p>
+                      )}
+                      <Button
+                        onClick={refreshPaymentStatus}
+                        disabled={isRefreshing}
+                        variant="outline"
+                        className="mt-2"
+                      >
+                        {isRefreshing ? (
+                          <>
+                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-2"></div>
+                            Refreshing...
+                          </>
+                        ) : (
+                          "Check Status"
+                        )}
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </div>
+              )}
+
+              {/* Payment Failed Status */}
+              {paymentData?.status === "canceled" && (
+                <div className="max-w-3xl mx-auto">
+                  <Card>
+                    <CardHeader className="flex flex-row items-center justify-center space-y-0 pb-2 border-b-2">
+                      <CardTitle className="text-2xl font-medium text-red-600">
+                        Payment Canceled
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="text-center py-6">
+                      <p className="text-lg font-medium mb-2">
+                        Your payment was canceled
+                      </p>
+                      <p className="text-muted-foreground mb-4">
+                        You can try again or contact support if you need
+                        assistance.
+                      </p>
+                      <div className="flex gap-2 justify-center">
+                        <form action="/api/checkout_sessions/" method="POST">
+                          <Button
+                            type="submit"
+                            className="bg-[#4CAF50] hover:bg-[#3e8e41]"
+                          >
+                            <CreditCard className="mr-2 h-4 w-4" />
+                            Try Again
+                          </Button>
+                        </form>
+                        <Button
+                          onClick={refreshPaymentStatus}
+                          disabled={isRefreshing}
+                          variant="outline"
+                        >
+                          {isRefreshing ? (
+                            <>
+                              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-2"></div>
+                              Refreshing...
+                            </>
+                          ) : (
+                            "Refresh Status"
+                          )}
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              )}
+
+              {/* Payment Success Status */}
+              {paymentData?.status === "succeeded" && (
+                <div className="max-w-3xl mx-auto">
+                  <Card>
+                    <CardHeader className="flex flex-row items-center justify-center space-y-0 pb-2 border-b-2">
+                      <CardTitle className="text-2xl font-medium text-green-600">
+                        Payment Successful!
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="text-center py-6">
+                      <div className="flex items-center justify-center mb-4">
+                        <BadgeCheck className="h-12 w-12 text-green-600" />
+                      </div>
+                      <p className="text-lg font-medium mb-2">
+                        Your registration is complete!
+                      </p>
+                      <p className="text-muted-foreground mb-4">
+                        Thank you for registering for the 2025 Summer Soccer
+                        Camp.
+                      </p>
+                      {paymentData.amount && (
+                        <div className="bg-green-50 p-4 rounded-lg mb-4">
+                          <p className="text-sm text-muted-foreground">
+                            Amount Paid:
+                          </p>
+                          <p className="text-xl font-bold text-green-600">
+                            ${(paymentData.amount / 100).toFixed(2)}{" "}
+                            {paymentData.currency?.toUpperCase()}
+                          </p>
+                          {paymentData.created && (
+                            <p className="text-sm text-muted-foreground mt-1">
+                              Paid on{" "}
+                              {new Date(
+                                paymentData.created * 1000
+                              ).toLocaleDateString()}
+                            </p>
+                          )}
+                        </div>
+                      )}
+                      <p className="text-sm text-muted-foreground">
+                        You will receive a confirmation email shortly with camp
+                        details.
+                      </p>
+                    </CardContent>
+                  </Card>
+                </div>
+              )}
+
+              {/* Debug Information - Only show in development */}
+              {process.env.NODE_ENV === "development" && paymentData && (
+                <div className="max-w-3xl mx-auto">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-sm font-medium">
+                        Debug: Payment Data from Redis
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <pre className="text-xs bg-muted p-4 rounded overflow-auto">
+                        {JSON.stringify(paymentData, null, 2)}
+                      </pre>
+                      <div className="mt-4 text-sm text-muted-foreground">
+                        <p>User paid status: {user.paid ? "true" : "false"}</p>
+                        <p>
+                          Stripe Customer ID:{" "}
+                          {user.stripeCustomerId || "Not set"}
+                        </p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              )}
             </div>
           </div>
         </main>
