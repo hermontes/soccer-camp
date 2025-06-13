@@ -207,19 +207,19 @@ export default function DashboardClient({ user, paymentData }) {
                 {/* Tabs Section */}
                 <Tabs
                   defaultValue="payment"
-                  className="w-full max-w-2xl mx-auto"
+                  className="w-full max-w-3xl mx-auto"
                 >
                   <TabsList className="grid w-full max-w-md mx-auto grid-cols-2">
                     <TabsTrigger
                       value="payment"
-                      className="flex items-center gap-2"
+                      className="flex items-center gap-2 cursor-pointer"
                     >
                       <CreditCard className="h-4 w-4" />
                       Payment
                     </TabsTrigger>
                     <TabsTrigger
                       value="settings"
-                      className="flex items-center gap-2"
+                      className="flex items-center gap-2 cursor-pointer"
                     >
                       <Settings className="h-4 w-4" />
                       Settings
@@ -387,7 +387,7 @@ export default function DashboardClient({ user, paymentData }) {
                                 >
                                   <Button
                                     type="submit"
-                                    className="w-full mt-4 bg-[#4CAF50] hover:bg-[#3e8e41]"
+                                    className="w-full mt-4 bg-[#4CAF50] hover:bg-[#3e8e41] cursor-pointer"
                                   >
                                     <CreditCard className="mr-2 h-4 w-4" />
                                     Pay Now
@@ -599,7 +599,7 @@ export default function DashboardClient({ user, paymentData }) {
                               className="w-full mt-1 p-2 border rounded-md"
                             />
                           </div>
-                          <Button onClick={updateUser} className="w-full">
+                          <Button onClick={updateUser} className="w-full cursor-pointer">
                             Update Profile
                           </Button>
                         </div>
