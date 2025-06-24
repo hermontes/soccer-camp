@@ -80,9 +80,8 @@ export default function HomePage() {
                 </div>
                 <div className="md:w-1/2 lg:w-full">
                   <CardContent className="py-5 space-y-2">
-                    <p>Greenfield Soccer Complex</p>
-                    <p>123 Sports Avenue</p>
-                    <p>Soccerville, CA 90210</p>
+                    <p>1500 Kalmia Rd NW</p>
+                    <p>Washington, DC 20012</p>
                   </CardContent>
                 </div>
               </div>
