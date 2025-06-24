@@ -12,7 +12,12 @@ import {
 import { Icon } from "lucide-react";
 import { soccerBall } from "@lucide/lab";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+  SheetTitle,
+} from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useRouter } from "next/navigation";
 import {
@@ -180,6 +185,7 @@ export default function Navigation({ session }) {
                 </Button>
               </SheetTrigger>
               <SheetContent side="right">
+                <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
                 <nav className="flex flex-col gap-4 mt-8">
                   <Link
                     href="/"
@@ -217,17 +223,44 @@ export default function Navigation({ session }) {
                   >
                     Contact
                   </Link>
-                  <div className="flex flex-col gap-2 mt-4">
-                    <Button variant="outline" asChild className="w-full">
-                      <Link href="/login">Login</Link>
-                    </Button>
-                    <Button
-                      asChild
-                      className="w-full bg-[#4CAF50] hover:bg-[#3e8e41]"
-                    >
-                      <Link href="/signup">Sign up</Link>
-                    </Button>
-                  </div>
+                  {!session ? (
+                    <div className="flex flex-col gap-2 mt-4">
+                      <Button variant="outline" asChild className="w-full">
+                        <Link href="/login">Login</Link>
+                      </Button>
+                      <Button
+                        asChild
+                        className="w-full bg-[#4CAF50] hover:bg-[#3e8e41]"
+                      >
+                        <Link href="/signup">Sign up</Link>
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col gap-2 mt-4">
+                      <div className="flex items-center gap-2 p-2">
+                        <Avatar>
+                          <AvatarImage
+                            src={session?.user.image || ""}
+                            alt={session?.user.name || "User"}
+                          />
+                          <AvatarFallback className="bg-[#4CAF50] text-white">
+                            {session?.user.name?.charAt(0) || "U"}
+                          </AvatarFallback>
+                        </Avatar>
+                        <span className="text-sm font-medium">
+                          {session?.user.name}
+                        </span>
+                      </div>
+                      <Button
+                        variant="outline"
+                        className="w-full text-red-600 hover:text-red-600 cursor-pointer"
+                        onClick={() => signOut()}
+                      >
+                        <LogOut className="mr-2 h-4 w-4" />
+                        Sign out
+                      </Button>
+                    </div>
+                  )}
                 </nav>
               </SheetContent>
             </Sheet>
