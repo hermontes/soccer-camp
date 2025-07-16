@@ -1,5 +1,3 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faExclamation } from "@fortawesome/free-solid-svg-icons";
 import { Loader2 } from "lucide-react";
 
 function SubmitButton({ isSubmitting, defaultMessage }) {
