@@ -12,7 +12,6 @@ export async function getRedisClient() {
         port: process.env.REDIS_PORT,
       },
     });
-
     client.on("error", (err) => console.error("Redis Client Error:", err));
     client.on("connect", () => console.log("Redis Client Connected"));
     client.on("end", () => console.log("Redis Client Connection Ended"));
