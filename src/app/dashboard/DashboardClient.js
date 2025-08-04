@@ -31,7 +31,7 @@ export default function DashboardClient({ user, paymentData }) {
 
   const router = useRouter();
 
-  const campStartDate = new Date("2025-07-08");
+  const campStartDate = new Date("2025-08-08");
 
   const countDownToCampDay = () => {
     const today = new Date();
@@ -171,7 +171,7 @@ export default function DashboardClient({ user, paymentData }) {
 
                       <div className="mt-2 text-xs text-muted-foreground">
                         Days until camp starts on{" "}
-                        <span className="font-medium">July 8, 2025</span>
+                        <span className="font-medium">August 8, 2025</span>
                       </div>
                     </CardContent>
                   </Card>
