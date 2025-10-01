@@ -139,14 +139,7 @@ export default function LogInPage() {
                 >
                   Password
                 </label>
-                <div className="text-sm">
-                  <a
-                    href="#"
-                    className="font-semibold text-[#4CAF50]  hover:text-[#3e8e41]"
-                  >
-                    Forgot password?
-                  </a>
-                </div>
+                
               </div>
               <div className="mt-2">
                 <div className="relative ">
