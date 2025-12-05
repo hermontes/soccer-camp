@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { getSessionCookie } from "better-auth/cookies";
 
 //Checks session when routing between pages
-export async function middleware(request) {
+export async function proxy(request) {
   const sessionCookie = getSessionCookie(request);
 
   if (!sessionCookie) {
