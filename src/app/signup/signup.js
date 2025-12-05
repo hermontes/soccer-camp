@@ -36,9 +36,6 @@ export default function SignUpPage() {
 
     await signUpUser(data)
       .then((res) => {
-        if (res) {
-          console.log(res);
-        }
         toast("Verification email has been sent", {
           duration: 10000,
           type: "success",
@@ -65,7 +62,6 @@ export default function SignUpPage() {
               color: "red",
             },
           });
-
         }
       });
   };

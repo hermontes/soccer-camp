@@ -21,22 +21,22 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
     autoSignIn: true,
-    requireEmailVerification: true,
+    // requireEmailVerification: true,
   },
 
-  emailVerification: {
-    sendVerificationEmail: async ({ user, url, token }, request) => {
-      const verificationURL = `${process.env.BETTER_AUTH_URL}/api/auth/verify-email?token=${token}&callbackURL=${process.env.VERIFIED_EMAIL_REDIRECT}`;
-      await sendEmail({
-        to: user.email,
-        subject: "Verify your email address",
-        text: `Click this link to confirm your email address and complete setup for your account. This verification link is only valid for 15 minutes: ${verificationURL}`,
-      });
-    },
-    sendOnSignUp: true, //send verification email on sign up
-    autoSignInAfterVerification: true,
-    expiresIn: 900, //verification token valid for 30 minutes
-  },
+  // emailVerification: {
+  //   // sendVerificationEmail: async ({ user, url, token }, request) => {
+  //   //   const verificationURL = `${process.env.BETTER_AUTH_URL}/api/auth/verify-email?token=${token}&callbackURL=${process.env.VERIFIED_EMAIL_REDIRECT}`;
+  //   //   await sendEmail({
+  //   //     to: user.email,
+  //   //     subject: "Verify your email address",
+  //   //     text: `Click this link to confirm your email address and complete setup for your account. This verification link is only valid for 15 minutes: ${verificationURL}`,
+  //   //   });
+  //   // },
+  //   // sendOnSignUp: true, //send verification email on sign up
+  //   autoSignInAfterVerification: true,
+  //   expiresIn: 900, //verification token valid for 30 minutes
+  // },
   database: prismaAdapter(prisma, {
     provider: "postgresql",
   }),
