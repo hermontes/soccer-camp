@@ -1,7 +1,6 @@
 //This tell Better-Auth how to behave and what is allowed once the requests are made to route.js
 //defines authentication rules and settings
 import { betterAuth } from "better-auth";
-import { admin } from "better-auth/plugins";
 
 import { nextCookies } from "better-auth/next-js";
 import { prismaAdapter } from "better-auth/adapters/prisma";
@@ -49,7 +48,6 @@ export const auth = betterAuth({
     },
   },
   plugins: [
-    admin(),
     nextCookies(),
     stripe({
       stripeClient: new Stripe(process.env.STRIPE_SECRET_KEY), //enables cookies for server calls
@@ -61,7 +59,6 @@ export const auth = betterAuth({
             const session = event.data.object;
             // Sync payment data to KV using Stripe customer ID
             await syncStripeDataToKV(session.customer);
-
           } catch (error) {
             console.error("Error handling webhooks", error);
           }
