@@ -1,10 +1,8 @@
 import { getRedisClient } from "./redis";
 import { stripe } from "@/lib/stripe";
-import { PrismaClient } from "../../generated/prisma";
+import { prisma } from "./prisma";
 import { headers } from "next/headers";
 import { auth } from "./auth";
-
-const prisma = new PrismaClient();
 
 export async function syncStripeDataToKV(stripeCustomerId) {
   // Get the session to access user ID

@@ -1,15 +1,13 @@
 "use client";
 
-import { authClient } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
-import DynamicComponent from "./DynamicComponent";
-
+import { useRouter } from "next/navigation";
+import { authClient } from "@/lib/auth-client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
+import { Button } from "@/components/ui/button";
 import {
   Clock,
   Users,
@@ -18,25 +16,18 @@ import {
   Lock,
   Settings,
 } from "lucide-react";
-import { createContext } from "react";
-import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
-import Link from "next/link";
-export const NavContext = createContext(1);
+
+const CAMP_START_DATE = new Date("2025-08-08");
 
 export default function DashboardClient({ user, paymentData }) {
   const [newName, setNewName] = useState("");
   const [newImage, setNewImage] = useState("");
   const [isRefreshing, setIsRefreshing] = useState(false);
-
   const router = useRouter();
 
-  const campStartDate = new Date("2025-08-08");
-
   const countDownToCampDay = () => {
-    const today = new Date();
-    const diffInMilliSeconds = campStartDate - today;
-    const diffInDays = Math.ceil(diffInMilliSeconds / (1000 * 60 * 60 * 24));
+    const diffInMs = CAMP_START_DATE - new Date();
+    const diffInDays = Math.ceil(diffInMs / (1000 * 60 * 60 * 24));
     return diffInDays > 0 ? diffInDays : 0;
   };
 
@@ -47,39 +38,18 @@ export default function DashboardClient({ user, paymentData }) {
         name: newName,
       });
 
-      if (response?.data?.status === true) {
-        console.log("Success updating user", response);
-        // Handle success - maybe show a toast notification
-      } else {
-        //if updating wasn't a success, we refresh page since it's most likely due to a 401 unauthorized error(no session)
-        console.log("Unauthorized - user session expired");
-
+      if (!response?.data?.status) {
         router.refresh();
       }
     } catch (error) {
-      // Handle unauthorized - redirect to login
+      console.error("Error updating user:", error.message);
       router.push("/login");
-      console.log("Error updating user:", error.message);
-      // Handle other errors
     }
   };
 
-  const signUserOut = async () => {
-    try {
-      const w = await authClient.signOut();
-
-      // const sessions = await authClient.listSessions();
-      // console.log(list);
-      router.refresh(); //I have to refresh so my middleware can catch and check if there's a session and re-route to signup page
-    } catch (err) {
-      console.log("Error revoking sessions", err);
-    }
-  };
-
-  const refreshPaymentStatus = async () => {
+  const refreshPaymentStatus = () => {
     setIsRefreshing(true);
     try {
-      // Refresh the page to get updated payment data from Redis
       router.refresh();
     } catch (error) {
       console.error("Error refreshing payment status:", error);
@@ -89,8 +59,7 @@ export default function DashboardClient({ user, paymentData }) {
   };
 
   return (
-    <>
-      <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col">
         <main className="flex flex-1 flex-col bg-muted/40">
           <div className="w-full mx-auto flex-1 space-y-4 p-8 pt-6">
             <div className="flex-1 space-y-4">
@@ -606,22 +575,6 @@ export default function DashboardClient({ user, paymentData }) {
                       </CardContent>
                     </Card>
 
-                    {/* <Card>
-                      <CardHeader>
-                        <CardTitle className="text-lg">
-                          Account Actions
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <Button
-                          onClick={signUserOut}
-                          variant="destructive"
-                          className="w-full"
-                        >
-                          Sign Out
-                        </Button>
-                      </CardContent>
-                    </Card> */}
                   </TabsContent>
                 </Tabs>
               </div>
@@ -629,6 +582,5 @@ export default function DashboardClient({ user, paymentData }) {
           </div>
         </main>
       </div>
-    </>
   );
 }

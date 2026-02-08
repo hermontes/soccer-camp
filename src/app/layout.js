@@ -12,7 +12,6 @@ export default async function RootLayout({ children }) {
     <html lang="en">
       <body className="bg-[#F9FAFB]">
         <NavigationLayout />
-        {/* <Navbar1></Navbar1> */}
         {children}
         <Toaster theme="light" />
       </body>

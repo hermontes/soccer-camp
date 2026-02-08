@@ -1,13 +1,14 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   Menu,
   LogOut,
   ChevronDown,
   ChevronUp,
   LayoutDashboard,
-  Settings,
 } from "lucide-react";
 import { Icon } from "lucide-react";
 import { soccerBall } from "@lucide/lab";
@@ -19,7 +20,6 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useRouter } from "next/navigation";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -28,27 +28,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useState } from "react";
-import { NavContext } from "@/app/dashboard/DashboardClient";
-import { useContext } from "react";
 import { authClient } from "@/lib/auth-client";
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
 
 export default function Navigation({ session }) {
   const router = useRouter();
   const [dropDown, setDropDown] = useState(false);
-  const passed = useContext(NavContext);
-
-  const toggleDropDown = () => {
-    setDropDown((prev) => !prev);
-  };
 
   const signOut = async () => {
     try {
-      const successSignOut = await authClient.signOut({
+      await authClient.signOut({
         fetchOptions: {
           onSuccess: () => {
             router.push("/login");
@@ -57,14 +45,13 @@ export default function Navigation({ session }) {
       });
       router.refresh();
     } catch (err) {
-      console.log("actual error");
+      console.error("Sign out error:", err);
     }
   };
 
   return (
-    <section className="">
-      <header className="w-full border-b bg-white shadow-sm px-2">
-        <div className="mx-auto flex h-16 items-center justify-between ">
+    <header className="w-full border-b bg-white shadow-sm px-2">
+      <div className="mx-auto flex h-16 items-center justify-between">
           <Link href="/" className="font-bold text-xl flex items-center">
             <span className="text-[#4CAF50]">Soccer</span>Camp
           </Link>
@@ -149,7 +136,7 @@ export default function Navigation({ session }) {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent
                     align="end"
-                    className="w-35 rounded-b-md mt-1 mr-3 !shadow-xl "
+                    className="w-35 rounded-b-md mt-1 mr-3 !shadow-xl"
                   >
                     <DropdownMenuLabel>My Account</DropdownMenuLabel>
                     <DropdownMenuSeparator />
@@ -265,8 +252,7 @@ export default function Navigation({ session }) {
               </SheetContent>
             </Sheet>
           </div>
-        </div>
-      </header>
-    </section>
+      </div>
+    </header>
   );
 }

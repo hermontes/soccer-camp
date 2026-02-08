@@ -8,17 +8,14 @@ export const metadata = {
   description: "Log in to your Summer Soccer Camp account.",
 };
 
-export default async function SignUpServer() {
-
+export default async function LoginServer() {
   const session = await auth.api.getSession({
-      headers: await headers(),
-    });
-  
-    //if no session exist and use tried to access sign up page, send user to landing page
-    if (!session) {
-      return <LogInPage></LogInPage>;
-    } else {
-      redirect("/dashboard");
-    }
+    headers: await headers(),
+  });
 
+  if (!session) {
+    return <LogInPage />;
+  }
+
+  redirect("/dashboard");
 }

@@ -1,7 +1,5 @@
 "use client";
-import Navigation from "@/components/navigation/Navigation";
 import { Button } from "@/components/ui/button";
-import { useSession } from "@/lib/auth-client";
 import Link from "next/link";
 import { ArrowRight, Calendar, MapPin, Trophy, Users } from "lucide-react";
 import {
@@ -118,7 +116,7 @@ export default function HomePage() {
 
       {/* Age Groups */}
       <section className="w-full py-12 md:py-24 lg:py-32 bg-white">
-        <div className="container  mx-auto px-4 md:px-6">
+        <div className="container mx-auto px-4 md:px-6">
           <div className="flex flex-col items-center justify-center space-y-4 text-center">
             <div className="space-y-2">
               <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">

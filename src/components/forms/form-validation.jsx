@@ -5,36 +5,34 @@ function SubmitButton({ isSubmitting, defaultMessage }) {
     <button
       disabled={isSubmitting}
       type="submit"
-      className={`flex w-full justify-center rounded-md  px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs  focus-visible:outline-2 focus-visible:outline-offset-2  ${
+      className={`flex w-full justify-center rounded-md px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 ${
         isSubmitting
-          ? `bg-[#4CAF50]/50`
-          : `bg-[#4CAF50] hover:bg-[#3e8e41] cursor-pointer`
-      } `}
+          ? "bg-[#4CAF50]/50"
+          : "bg-[#4CAF50] hover:bg-[#3e8e41] cursor-pointer"
+      }`}
     >
-      {isSubmitting ?<Loader2 className="animate-spin"/> : defaultMessage}
+      {isSubmitting ? <Loader2 className="animate-spin" /> : defaultMessage}
     </button>
   );
 }
 
 function DisplayErrorMessage({ message }) {
-  return (
+  const parts = message.split(/(?= -)/);
 
+  return (
     <div className="flex flex-col text-[#B3251E] text-xs">
-    <div className="flex items-center ml-1">
-      {/* <div className="w-3 h-3 ml-1 mr-1 rounded-full bg-[#B3251E] flex items-center justify-center">
-        <FontAwesomeIcon
-          icon={faExclamation}
-          className="text-[12px] text-white "
-        />
-      </div> */}
-      <span>{message.split(/(?= -)/)[0]}</span>
+      <div className="flex items-center ml-1">
+        <span>{parts[0]}</span>
+      </div>
+      <div className="ml-4">
+        {parts.slice(1).map((part, index) => (
+          <span key={index} className="block">
+            {part}
+          </span>
+        ))}
+      </div>
     </div>
-    <div className="ml-4">
-      {message.split(/(?= -)/).slice(1).map((part, index) => (
-        <span key={index} className="block"> {part}</span>
-      ))}
-    </div>
-  </div>
   );
 }
-export {SubmitButton, DisplayErrorMessage};
+
+export { SubmitButton, DisplayErrorMessage };

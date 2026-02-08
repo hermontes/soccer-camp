@@ -1,16 +1,16 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import Link from "next/link";
+import { EyeOff, Eye } from "lucide-react";
+import { toast } from "sonner";
 import { signUpUser } from "@/app/utils/authentication/users-auth-validation";
 import {
   SubmitButton,
   DisplayErrorMessage,
 } from "@/components/forms/form-validation";
-import Link from "next/link";
-import { toast } from "sonner";
-import { EyeOff, Eye } from "lucide-react";
-import { useState } from "react";
 
 export default function SignUpPage() {
   const router = useRouter();
@@ -23,262 +23,214 @@ export default function SignUpPage() {
     formState: { errors, isSubmitting },
     reset,
     getValues,
-    watch, //checking for password match
-    resetField,
   } = useForm();
 
-  // const formatErrorMessage = (issues) => {
-
-  // };
-
-  const sendFormToServer = async (data) => {
-    // event.preventDefault();
-
-    await signUpUser(data)
-      .then((res) => {
-        toast("Verification email has been sent", {
-          duration: 10000,
-          type: "success",
-          description:
-            "Check your email inbox or spam folder and click on the link to verify your email",
-          style: {
-            color: "black",
-          },
-        });
-        router.push("/dashboard");
-        reset();
-      })
-      .catch((error) => {
-        if (error) {
-          //TODO: message: Sign in to this account or enter an email address that isn't already in use.
-
-          console.log(error);
-          toast("Something went wrong while creating an account", {
-            duration: 10000,
-            type: "error",
-            description:
-              "Please check you don't have an existing account or try again",
-            style: {
-              color: "red",
-            },
-          });
-        }
+  const handleSignUp = async (data) => {
+    try {
+      await signUpUser(data);
+      toast("Verification email has been sent", {
+        duration: 10000,
+        type: "success",
+        description:
+          "Check your email inbox or spam folder and click on the link to verify your email",
+        style: { color: "black" },
       });
+      router.push("/dashboard");
+      reset();
+    } catch (error) {
+      console.error("Sign up failed:", error);
+      toast("Something went wrong while creating an account", {
+        duration: 10000,
+        type: "error",
+        description:
+          "Please check you don't have an existing account or try again",
+        style: { color: "red" },
+      });
+    }
   };
 
   return (
-    <>
-      <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-        <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          {/* <img
-            alt="Your Company"
-            src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
-            className="mx-auto h-10 w-auto"
-          /> */}
-          <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">
-            Sign up to create an account
-          </h2>
-        </div>
-
-        {/* <div className="!shadow-[0px_0px_3px_gray]">Test</div> */}
-        <div className="!shadow-md w-full max-w-md mt-10 sm:mx-auto sm:w-full sm:max-w-sm md:max-w-md bg-[#FFFFFF] p-[3rem] rounded-md ">
-          <form
-            onSubmit={handleSubmit((data) => sendFormToServer(data))}
-            method="POST"
-            className="space-y-6 "
-          >
-            <div>
-              <label
-                htmlFor="name"
-                className="block text-sm/6 font-medium text-gray-900"
-              >
-                Name
-              </label>
-              <div className="mt-2">
-                <input
-                  id="name"
-                  //register returns props so we spread them by ...
-                  {...register("name", {
-                    required: "Please enter your name",
-                    minLength: {
-                      value: 2,
-                      message: "Minimum length of 2 characters required",
-                    },
-                    maxLength: { value: 80, message: "Max len reached" },
-                  })}
-                  name="name"
-                  type="text"
-                  // onChange={(e) => setName(e.target.value)}
-                  autoComplete="name"
-                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                />
-                {errors.name && (
-                  <DisplayErrorMessage message={errors.name.message} />
-                )}
-              </div>
-            </div>
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm/6 font-medium text-gray-900"
-              >
-                Email address
-              </label>
-              <div className="mt-2">
-                <input
-                  {...register("email", {
-                    required: "Please enter an email address",
-                    pattern: {
-                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                      message: "Email must be formatted correctly.",
-                    },
-                  })}
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                />
-                {errors.email && (
-                  <DisplayErrorMessage message={errors.email.message} />
-                )}
-              </div>
-            </div>
-
-            <div>
-              <div className="flex items-center justify-between">
-                <label
-                  htmlFor="password"
-                  className="block text-sm/6 font-medium text-gray-900"
-                >
-                  Password
-                </label>
-              </div>
-              <div className="mt-2 relative">
-                <input
-                  {...register("password", {
-                    required: "Please enter a password",
-                    // minLength: {
-                    //   value: 8,
-                    //   message: "Minimum length of 8 characters required",
-                    // },
-                    maxLength: {
-                      value: 80,
-                      message: "Maximum length of 80 characters",
-                    },
-                    validate: (val) => {
-                      // Check for at least one letter and one number
-                      const hasCapitalLetter = /[A-Z]/.test(val);
-                      const hasSmallLetter = /[a-z]/.test(val);
-                      const hasNumber = /[0-9]/.test(val);
-
-                      const issues = [];
-                      if (!hasCapitalLetter) issues.push("- A capital letter");
-                      if (!hasSmallLetter) issues.push("- A small letter");
-                      if (!hasNumber) issues.push("- A number");
-                      if (issues.length > 0) {
-                        let message = "Password must contain:\n";
-                        issues.forEach((elem) => {
-                          message += ` ${elem}\n`;
-                        });
-                        return message;
-                      }
-                      return true;
-                    },
-                  })}
-                  id="password"
-                  name="password"
-                  type={showPass ? "text" : "password"}
-                  autoComplete="current-password"
-                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                />
-                <button
-                  type="button"
-                  className="absolute bg-white pt-1.5 pb-1.5 px-0.5 cursor-pointer top-1 right-1 outline-none"
-                  onClick={() => setShowPass((prev) => !prev)}
-                >
-                  <div className="hover:bg-gray-50 px-1 rounded-full">
-                    {showPass ? (
-                      <EyeOff className="h-4 w-4" aria-hidden="true" />
-                    ) : (
-                      <Eye className="h-4 w-4" aria-hidden="true" />
-                    )}
-                  </div>
-                </button>
-                {errors.password && (
-                  <DisplayErrorMessage
-                    message={errors.password.message}
-                  ></DisplayErrorMessage>
-                )}
-              </div>
-            </div>
-            <div>
-              <div className="flex items-center justify-between">
-                <label
-                  htmlFor="confirmPassword"
-                  className="block text-sm/6 font-medium text-gray-900"
-                >
-                  Confirm Password
-                </label>
-              </div>
-              <div className="mt-2 relative">
-                <input
-                  {...register("confirmPassword", {
-                    required: "Confirm your password",
-                    validate: (val) => {
-                      return (
-                        getValues("password") === val ||
-                        "Passwords do not match. Try again."
-                      );
-                    },
-                  })}
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  type={showConfirmPass ? "text" : "password"}
-                  autoComplete="current-password"
-                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                />
-                <button
-                  type="button"
-                  className="absolute bg-white pt-1.5 pb-1.5 px-0.5 cursor-pointer top-1 right-1 outline-none"
-                  onClick={() => setShowConfirmPass((prev) => !prev)}
-                >
-                  <div className="hover:bg-gray-50 px-1 rounded-full">
-                    {showConfirmPass ? (
-                      <EyeOff className="h-4 w-4" aria-hidden="true" />
-                    ) : (
-                      <Eye className="h-4 w-4" aria-hidden="true" />
-                    )}
-                  </div>
-                </button>
-                {errors.confirmPassword && (
-                  <>
-                    <DisplayErrorMessage
-                      message={errors.confirmPassword.message}
-                    />
-                  </>
-                )}
-              </div>
-            </div>
-            <div>
-              <SubmitButton
-                isSubmitting={isSubmitting}
-                defaultMessage={"Sign Up"}
-              />
-            </div>
-          </form>
-
-          <p className="mt-10 text-center text-sm/6 text-gray-500">
-            Already a member?{" "}
-            <Link
-              href="/login"
-              className="font-semibold text-[#4CAF50] hover:text-[#3e8e41]"
-            >
-              Log in
-            </Link>
-          </p>
-        </div>
+    <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+      <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+        <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">
+          Sign up to create an account
+        </h2>
       </div>
-    </>
+
+      <div className="!shadow-md w-full max-w-md mt-10 sm:mx-auto sm:w-full sm:max-w-sm md:max-w-md bg-[#FFFFFF] p-[3rem] rounded-md">
+        <form
+          onSubmit={handleSubmit(handleSignUp)}
+          className="space-y-6"
+        >
+          <div>
+            <label
+              htmlFor="name"
+              className="block text-sm/6 font-medium text-gray-900"
+            >
+              Name
+            </label>
+            <div className="mt-2">
+              <input
+                id="name"
+                {...register("name", {
+                  required: "Please enter your name",
+                  minLength: {
+                    value: 2,
+                    message: "Minimum length of 2 characters required",
+                  },
+                  maxLength: { value: 80, message: "Max len reached" },
+                })}
+                name="name"
+                type="text"
+                autoComplete="name"
+                className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+              />
+              {errors.name && (
+                <DisplayErrorMessage message={errors.name.message} />
+              )}
+            </div>
+          </div>
+
+          <div>
+            <label
+              htmlFor="email"
+              className="block text-sm/6 font-medium text-gray-900"
+            >
+              Email address
+            </label>
+            <div className="mt-2">
+              <input
+                {...register("email", {
+                  required: "Please enter an email address",
+                  pattern: {
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                    message: "Email must be formatted correctly.",
+                  },
+                })}
+                id="email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+              />
+              {errors.email && (
+                <DisplayErrorMessage message={errors.email.message} />
+              )}
+            </div>
+          </div>
+
+          <div>
+            <label
+              htmlFor="password"
+              className="block text-sm/6 font-medium text-gray-900"
+            >
+              Password
+            </label>
+            <div className="mt-2 relative">
+              <input
+                {...register("password", {
+                  required: "Please enter a password",
+                  maxLength: {
+                    value: 80,
+                    message: "Maximum length of 80 characters",
+                  },
+                  validate: (val) => {
+                    const hasCapitalLetter = /[A-Z]/.test(val);
+                    const hasSmallLetter = /[a-z]/.test(val);
+                    const hasNumber = /[0-9]/.test(val);
+
+                    const issues = [];
+                    if (!hasCapitalLetter) issues.push("- A capital letter");
+                    if (!hasSmallLetter) issues.push("- A small letter");
+                    if (!hasNumber) issues.push("- A number");
+                    if (issues.length > 0) {
+                      return `Password must contain:\n${issues.map((i) => ` ${i}`).join("\n")}`;
+                    }
+                    return true;
+                  },
+                })}
+                id="password"
+                name="password"
+                type={showPass ? "text" : "password"}
+                autoComplete="new-password"
+                className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+              />
+              <button
+                type="button"
+                className="absolute bg-white pt-1.5 pb-1.5 px-0.5 cursor-pointer top-1 right-1 outline-none"
+                onClick={() => setShowPass((prev) => !prev)}
+              >
+                <div className="hover:bg-gray-50 px-1 rounded-full">
+                  {showPass ? (
+                    <EyeOff className="h-4 w-4" aria-hidden="true" />
+                  ) : (
+                    <Eye className="h-4 w-4" aria-hidden="true" />
+                  )}
+                </div>
+              </button>
+              {errors.password && (
+                <DisplayErrorMessage message={errors.password.message} />
+              )}
+            </div>
+          </div>
+
+          <div>
+            <label
+              htmlFor="confirmPassword"
+              className="block text-sm/6 font-medium text-gray-900"
+            >
+              Confirm Password
+            </label>
+            <div className="mt-2 relative">
+              <input
+                {...register("confirmPassword", {
+                  required: "Confirm your password",
+                  validate: (val) =>
+                    getValues("password") === val ||
+                    "Passwords do not match. Try again.",
+                })}
+                id="confirmPassword"
+                name="confirmPassword"
+                type={showConfirmPass ? "text" : "password"}
+                autoComplete="new-password"
+                className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+              />
+              <button
+                type="button"
+                className="absolute bg-white pt-1.5 pb-1.5 px-0.5 cursor-pointer top-1 right-1 outline-none"
+                onClick={() => setShowConfirmPass((prev) => !prev)}
+              >
+                <div className="hover:bg-gray-50 px-1 rounded-full">
+                  {showConfirmPass ? (
+                    <EyeOff className="h-4 w-4" aria-hidden="true" />
+                  ) : (
+                    <Eye className="h-4 w-4" aria-hidden="true" />
+                  )}
+                </div>
+              </button>
+              {errors.confirmPassword && (
+                <DisplayErrorMessage
+                  message={errors.confirmPassword.message}
+                />
+              )}
+            </div>
+          </div>
+
+          <div>
+            <SubmitButton isSubmitting={isSubmitting} defaultMessage="Sign Up" />
+          </div>
+        </form>
+
+        <p className="mt-10 text-center text-sm/6 text-gray-500">
+          Already a member?{" "}
+          <Link
+            href="/login"
+            className="font-semibold text-[#4CAF50] hover:text-[#3e8e41]"
+          >
+            Log in
+          </Link>
+        </p>
+      </div>
+    </div>
   );
 }

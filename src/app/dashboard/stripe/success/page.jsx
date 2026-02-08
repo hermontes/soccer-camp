@@ -19,7 +19,7 @@ export const metadata = {
 };
 
 export default async function Success({ searchParams }) {
-  const session = await auth.api.getSession({
+  await auth.api.getSession({
     headers: await headers(),
   });
   const { session_id } = searchParams;
@@ -37,20 +37,16 @@ export default async function Success({ searchParams }) {
   }
 
   if (checkoutSession.status !== "complete") {
-    console.log("Checkout session not complete:", checkoutSession.status);
     redirect("/dashboard/stripe/failure");
   }
 
-  // Use the customer ID from the checkout session
   const customerId = checkoutSession.customer;
   if (!customerId) {
     console.error("No customer ID found in checkout session");
     redirect("/dashboard/stripe/failure");
   }
 
-  // Only sync payment data after confirming checkout is complete
   const data = await syncStripeDataToKV(customerId);
-  console.log("Payment data synced:", data);
 
   return (
     <div className="container mx-auto py-8 px-4 max-w-3xl">

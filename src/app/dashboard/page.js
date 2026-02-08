@@ -14,20 +14,13 @@ export default async function Dashboard() {
     headers: await headers(),
   });
 
-  if (session) {
-    // Fetch payment data from Redis
-    const paymentData = await getPaymentDataFromRedis(
-      session.user.stripeCustomerId
-    );
-
-    return (
-      <DashboardClient
-        user={session.user}
-        paymentData={paymentData}
-      ></DashboardClient>
-    );
-  } else {
-    console.log("There is no session");
+  if (!session) {
     throw redirect("/login");
   }
+
+  const paymentData = await getPaymentDataFromRedis(
+    session.user.stripeCustomerId
+  );
+
+  return <DashboardClient user={session.user} paymentData={paymentData} />;
 }

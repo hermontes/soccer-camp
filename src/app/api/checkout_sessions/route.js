@@ -1,5 +1,3 @@
-// creating Stripe Checkout Session after UI trigger
-
 import { NextResponse } from "next/server";
 import { headers } from "next/headers";
 import { getRedisClient } from "@/lib/redis";
@@ -15,17 +13,12 @@ export async function POST() {
     return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
   }
 
-  //to do: if a customer already paid, send them back
-
   try {
     const client = await getRedisClient();
-
     await client.set(
       `stripe:user:${session.user.id}`,
       session.user.stripeCustomerId
     );
-    // const result = await client.get(`stripe:user:${session.user.id}`);
-    // console.log("The result after fetching by the key:", result);
   } catch (err) {
     console.error("Redis operation failed:", err);
     return NextResponse.json(
@@ -38,7 +31,7 @@ export async function POST() {
     const headersList = await headers();
     const origin = headersList.get("origin");
 
-    const checkOutSession = await stripe.checkout.sessions.create({
+    const checkoutSession = await stripe.checkout.sessions.create({
       customer: session.user.stripeCustomerId,
       line_items: [
         {
@@ -51,7 +44,7 @@ export async function POST() {
       cancel_url: `${origin}/dashboard/?canceled=true`,
     });
 
-    return NextResponse.redirect(checkOutSession.url, 303);
+    return NextResponse.redirect(checkoutSession.url, 303);
   } catch (err) {
     return NextResponse.json(
       { error: err.message },
